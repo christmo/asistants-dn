@@ -1,0 +1,207 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "diners club",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "WordsIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "el {words}",
+            "cómo {words}",
+            "tengo {words}",
+            "cuando {words}",
+            "consulta {words}",
+            "puedes {words}",
+            "cuándo {words}",
+            "que {words}",
+            "cuánto {words}",
+            "cuanto {words}",
+            "cuál {words}",
+            "qué {words}",
+            "cuantas {words}",
+            "cuales {words}",
+            "cual {words}",
+            "quiero {words}"
+          ]
+        },
+        {
+          "name": "AfirmativeIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "afirmativo {words}"
+          ]
+        },
+        {
+          "name": "RegisterUserIntent",
+          "slots": [
+            {
+              "name": "cedula",
+              "type": "AMAZON.SearchQuery",
+              "samples": [
+                "el número es {cedula}",
+                "claro mi cédula es {cedula}"
+              ]
+            }
+          ],
+          "samples": [
+            "resgístrame en dainers club",
+            "resgístrame en diners club"
+          ]
+        },
+        {
+          "name": "OTPIntent",
+          "slots": [
+            {
+              "name": "otp",
+              "type": "AMAZON.SearchQuery",
+              "samples": [
+                "OTP {otp}",
+                "el código es {otp}",
+                "mi o t p es {otp}"
+              ]
+            }
+          ],
+          "samples": [
+            "estoy listo para validar mi cuenta",
+            "llegó mi código",
+            "ya tengo mi código",
+            "ya tengo mi o t p",
+            "llegó mi OTP",
+            "ya tengo mi OTP"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "Diners"
+              }
+            },
+            {
+              "name": {
+                "value": "Visa"
+              }
+            }
+          ],
+          "name": "ValorTarjetaSlot"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "value": "todo"
+              }
+            }
+          ],
+          "name": "words_alexa"
+        }
+      ]
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "RegisterUserIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "cedula",
+              "type": "AMAZON.SearchQuery",
+              "elicitationRequired": true,
+              "confirmationRequired": true,
+              "prompts": {
+                "confirmation": "Confirm.Slot.1251723132429.1350547918234",
+                "elicitation": "Elicit.Slot.1251723132429.1350547918234"
+              }
+            }
+          ],
+          "delegationStrategy": "ALWAYS"
+        },
+        {
+          "name": "OTPIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "otp",
+              "type": "AMAZON.SearchQuery",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.813851585828.213005695535"
+              }
+            }
+          ]
+        }
+      ],
+      "delegationStrategy": "ALWAYS"
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Slot.1251723132429.1350547918234",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Dictame tu cédula de identidad"
+          },
+          {
+            "type": "PlainText",
+            "value": "Cuál es tu cédula?"
+          }
+        ]
+      },
+      {
+        "id": "Confirm.Slot.1251723132429.1350547918234",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tú cédula es {cedula}"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.813851585828.213005695535",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Díctame el número que recibiste en tu celular"
+          }
+        ]
+      }
+    ]
+  },
+  "version": "57"
+}
