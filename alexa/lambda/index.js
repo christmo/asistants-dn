@@ -2,7 +2,7 @@
 // Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
 // session persistence, api calls, and more.
 const Alexa = require('ask-sdk-core');
-const axios = require('axios');
+const watson = require('./watson.js');
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -10,21 +10,30 @@ const LaunchRequestHandler = {
     },
     async handle(handlerInput) {
         let alexaId = handlerInput.requestEnvelope.session.user.userId;
-        console.log("alexaId:" + alexaId);
-        let speakOutput = 'Un mundo sin límites';
+        console.log("AlexaId Bienbenida: " + alexaId);
+        let speakOutput = 'En este momento no estamos disponibles, por favor intenta en unos minutos.';
     
-        await watson('Bienvenida',alexaId)
+        await watson.interaction('Bienvenida',alexaId)
         .then((res) => {
-          console.log(res.data);
-          speakOutput = res.data.output.text[0];
+          if(res.data){
+            console.log(JSON.stringify(res.data));
+            speakOutput = res.data.output.text[0];
+            return handlerInput.responseBuilder
+                .speak(speakOutput)
+                .reprompt(speakOutput)
+                .getResponse();
+          }
         })
         .catch((error) => {
-          console.error(error);
+            if(error.response){
+                console.error(JSON.stringify(error.response.data));
+                speakOutput = error.response.data.output.text[0];
+            }
         });
         
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            .reprompt(speakOutput)
+            //.reprompt(speakOutput)
             .getResponse();
     }
 };
@@ -40,14 +49,37 @@ const OTPIntentHandler = {
         console.log(alexaId);
         let speakOutput = "Diners Club no ha confirmado el OTP";
         
-        await validation(otp, alexaId)
+        await watson.validation(otp, alexaId)
         .then((res) => {
           console.log(res.data);
           speakOutput = res.data.output.text[0];
         })
         .catch((error) => {
-          console.error(error);
-          speakOutput = error.response.data.output.text[0];
+            console.error(JSON.stringify(error.response.data));
+            speakOutput = error.response.data.output.text[0];
+        });
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .getResponse();
+    }
+};
+
+const UnlockIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'UnlockIntent';
+    },
+    async handle(handlerInput) {
+        let alexaId = handlerInput.requestEnvelope.session.user.userId;
+        let speakOutput = "Diners Club no ha respondido";
+        
+        await watson.unlock(alexaId)
+        .then((res) => {
+          speakOutput = res.data.output.text[0];
+        })
+        .catch((error) => {
+            console.error(JSON.stringify(error.response.data));
+            speakOutput = error.response.data.output.text[0];   
         });
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -63,15 +95,18 @@ const RegisterUserIntentHandler = {
     async handle(handlerInput) {
         let alexaId = handlerInput.requestEnvelope.session.user.userId;
         let identification = Alexa.getSlotValue(handlerInput.requestEnvelope, 'cedula');
+        console.log('Registro AlexaId: ' + alexaId);
         console.log(identification);
         let speakOutput = "Diners Club no ha respondido";
         
-        await register(identification, alexaId)
+        await watson.register(identification, alexaId)
         .then((res) => {
           speakOutput = res.data.output.text[0];
         })
         .catch((error) => {
-          console.error(error);
+            console.error(JSON.stringify(error.response.data));
+            speakOutput = error.response.data.output.text[0];
+          
         });
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -79,26 +114,22 @@ const RegisterUserIntentHandler = {
     }
 };
 
-const AfirmativeIntentHandler = {
+const EverythingIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AfirmativeIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'EverythingIntent';
     },
     async handle(handlerInput) {
         console.log(JSON.stringify(handlerInput));
-        console.log(handlerInput.requestEnvelope.request.intent.name);
-        console.log(handlerInput.requestEnvelope.session.user.userId);
-        
-        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-        console.log(JSON.stringify(sessionAttributes));
+
         let slot = Alexa.getSlotValue(handlerInput.requestEnvelope, 'words');
         let intent = slot;
         console.log(intent);
-        console.log(Alexa.getDialogState(handlerInput.requestEnvelope));
+        let alexaId = handlerInput.requestEnvelope.session.user.userId;
         
         let speakOutput = intent;
         let stayAlive = false;
-        await watson(intent,'0917240293')
+        await watson.interaction(intent,alexaId)
         .then((res) => {
           console.log(res.data);
           speakOutput = res.data.output.text[0];
@@ -112,14 +143,15 @@ const AfirmativeIntentHandler = {
           }
         })
         .catch((error) => {
-          console.error(error);
+            console.error(JSON.stringify(error.response.data));
+            speakOutput = error.response.data.output.text[0];
         });
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
     }
 };
-
+/*
 const WordsIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -137,7 +169,7 @@ const WordsIntentHandler = {
         
         let speakOutput = intent;
         let stayAlive = false;
-        await watson(intent,'0917240293')
+        await watson(intent,alexaId)
         .then((res) => {
           console.log(res.data);
           speakOutput = res.data.output.text[0];
@@ -151,90 +183,17 @@ const WordsIntentHandler = {
           }
         })
         .catch((error) => {
-          console.error(error);
+            console.error(JSON.stringify(error.response.data));
+            speakOutput = error.response.data.output.text[0];
         });
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
     }
 };
+*/
 
-const watson = function(intent, userId){
-    let url = 'https://chatqa.dce.ec:32510/alexa-demo/api/watson/init';
-    return axios.post(url, {
-            "input": {
-                "text": intent
-            },
-            "context": {
-                "device_id": userId
-            }
-        });
-};
-const register = function(identification, userId){
-    let url = 'https://chatqa.dce.ec:32510/alexa-demo/api/watson/register';
-    return axios.post(url, {
-            "deviceId": userId,
-            "identification": identification,
-        });
-};
-const validation = function(otp, userId){
-    let url = 'https://chatqa.dce.ec:32510/alexa-demo/api/watson/validate';
-    return axios.post(url, {
-            "deviceId": userId,
-            "otp": otp,
-        });
-};
-
-/*
-const HelloWorldIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
-    },
-    handle(handlerInput) {
-         console.log('HelloWorldIntent');
-         console.log(handlerInput);
-        console.log(JSON.stringify(handlerInput).requestEnvelope.request.intent.name);
-        const speakOutput = 'Hola Christian...';
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-            .getResponse();
-    }
-};*/
-
-const saldoTarjetaHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'saldoTarjeta';
-    },
-    async handle(handlerInput) {
-        console.log(JSON.stringify(handlerInput));
-        console.log(handlerInput.requestEnvelope.request.intent.name);
-        console.log(handlerInput.requestEnvelope.session.user.userId);
-        
-        let slot = handlerInput.requestEnvelope.request.intent.slots.tarjeta.value;
-        let intent = 'saldo ' + slot;
-        console.log(intent);
-        
-        let speakOutput = 'Hola Christian...';
-        await watson("bienvenido",'1104058837')
-        .then((res) => {
-          console.log(res.data);
-          speakOutput = res.data.context.descripcion;
-          console.log(res.data.context.descripcion);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-            .getResponse();
-    }
-};
-
-const FallbackIntentHandler = {
+/*const FallbackIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
@@ -249,7 +208,7 @@ const FallbackIntentHandler = {
             .reprompt(speakOutput)
             .getResponse();
     }
-};
+};*/
 const HelpIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -297,7 +256,7 @@ const IntentReflectorHandler = {
     },
     handle(handlerInput) {
         const intentName = Alexa.getIntentName(handlerInput.requestEnvelope);
-        const speakOutput = `You just triggered ${intentName}`;
+        const speakOutput = `No se encotró el intent llamado: ${intentName}`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -315,11 +274,11 @@ const ErrorHandler = {
     },
     handle(handlerInput, error) {
         console.log(`~~~~ Error handled: ${error.stack}`);
-        const speakOutput = `Sorry, I had trouble doing what you asked. Please try again.`;
+        const speakOutput = `En este momento no te podemos atender, por favor intenta más tarde.`;
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            .reprompt(speakOutput)
+            //.reprompt(speakOutput)
             .getResponse();
     }
 };
@@ -329,13 +288,12 @@ const ErrorHandler = {
 // defined are included below. The order matters - they're processed top to bottom.
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
-        WordsIntentHandler,
-        AfirmativeIntentHandler,
         RegisterUserIntentHandler,
         OTPIntentHandler,
-        FallbackIntentHandler,
+        UnlockIntentHandler,
+        EverythingIntentHandler,
+        //FallbackIntentHandler,
         LaunchRequestHandler,
-        //HelloWorldIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         SessionEndedRequestHandler,

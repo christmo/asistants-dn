@@ -20,49 +20,6 @@
           "samples": []
         },
         {
-          "name": "AMAZON.FallbackIntent",
-          "samples": []
-        },
-        {
-          "name": "WordsIntent",
-          "slots": [
-            {
-              "name": "words",
-              "type": "AMAZON.SearchQuery"
-            }
-          ],
-          "samples": [
-            "el {words}",
-            "cómo {words}",
-            "tengo {words}",
-            "cuando {words}",
-            "consulta {words}",
-            "puedes {words}",
-            "cuándo {words}",
-            "que {words}",
-            "cuánto {words}",
-            "cuanto {words}",
-            "cuál {words}",
-            "qué {words}",
-            "cuantas {words}",
-            "cuales {words}",
-            "cual {words}",
-            "quiero {words}"
-          ]
-        },
-        {
-          "name": "AfirmativeIntent",
-          "slots": [
-            {
-              "name": "words",
-              "type": "AMAZON.SearchQuery"
-            }
-          ],
-          "samples": [
-            "afirmativo {words}"
-          ]
-        },
-        {
           "name": "RegisterUserIntent",
           "slots": [
             {
@@ -100,6 +57,43 @@
             "llegó mi OTP",
             "ya tengo mi OTP"
           ]
+        },
+        {
+          "name": "EverythingIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "quisiera {words}",
+            "hasta {words}",
+            "la {words}",
+            "el {words}",
+            "cómo {words}",
+            "tengo {words}",
+            "cuando {words}",
+            "consulta {words}",
+            "puedes {words}",
+            "cuándo {words}",
+            "que {words}",
+            "cuánto {words}",
+            "cuanto {words}",
+            "cuál {words}",
+            "qué {words}",
+            "cuantas {words}",
+            "cuales {words}",
+            "cual {words}",
+            "quiero {words}"
+          ]
+        },
+        {
+          "name": "UnlockIntent",
+          "slots": [],
+          "samples": [
+            "desbloquea mi cuenta"
+          ]
         }
       ],
       "types": [
@@ -107,26 +101,51 @@
           "values": [
             {
               "name": {
-                "value": "Diners"
+                "value": "afirmativo"
               }
             },
             {
               "name": {
-                "value": "Visa"
+                "value": "y"
+              }
+            },
+            {
+              "name": {
+                "value": "dame"
+              }
+            },
+            {
+              "name": {
+                "value": "dime"
+              }
+            },
+            {
+              "name": {
+                "value": "si"
               }
             }
           ],
-          "name": "ValorTarjetaSlot"
+          "name": "intent_words"
         },
         {
           "values": [
             {
               "name": {
-                "value": "todo"
+                "value": "dame"
+              }
+            },
+            {
+              "name": {
+                "value": "dime"
+              }
+            },
+            {
+              "name": {
+                "value": "puedes"
               }
             }
           ],
-          "name": "words_alexa"
+          "name": "BAG_OF_WORDS"
         }
       ]
     },
@@ -188,7 +207,7 @@
         "variations": [
           {
             "type": "PlainText",
-            "value": "Tú cédula es {cedula}"
+            "value": "Tú cédula es {cedula} ?"
           }
         ]
       },
@@ -203,5 +222,5 @@
       }
     ]
   },
-  "version": "57"
+  "version": "89"
 }
