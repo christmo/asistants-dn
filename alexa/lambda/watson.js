@@ -1,4 +1,5 @@
 const axios = require('axios');
+axios.defaults.withCredentials = true;
 
 const endpoint = 'https://chatqa.dce.ec:30013/alexa-demo';
 const interaction = function(intent, userId){

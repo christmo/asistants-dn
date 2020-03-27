@@ -15,6 +15,7 @@ const LaunchRequestHandler = {
     
         await watson.interaction('Bienvenida',alexaId)
         .then((res) => {
+            console.log(JSON.stringify(res.headers));
           if(res.data){
             console.log(JSON.stringify(res.data));
             speakOutput = res.data.output.text[0];
@@ -114,84 +115,70 @@ const RegisterUserIntentHandler = {
     }
 };
 
-const EverythingIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'EverythingIntent';
-    },
-    async handle(handlerInput) {
-        console.log(JSON.stringify(handlerInput));
+const interaction = async function(handlerInput, slotName, phrase) {
+    let alexaId = handlerInput.requestEnvelope.session.user.userId;
+    let slot = phrase;
+    if(slotName){
+        slot = Alexa.getSlotValue(handlerInput.requestEnvelope, slotName);
+    }
+    let stayAlive = false;
+    let intent = slot;
+    
+    if(phrase && slot){
+        intent = phrase + " " + slot;
+    } else {
+        if(phrase){
+            intent = phrase;
+        } else {
+            intent = slot;
+        }
+    }
+    console.log(intent);
+    
+    let speakOutput = 'Un mundo sin límites';
+    await watson.interaction(intent,alexaId)
+        .then((res) => {
+            if(res.data){
+              console.log(JSON.stringify(res.data));
+              speakOutput = res.data.output.text[0];
+              stayAlive = res.data.context.stayAlive;
+              if(stayAlive){
+                return handlerInput.responseBuilder
+                    .speak(speakOutput)
+                    .reprompt('') //alive
+                    .getResponse();
+              }
+            }
+        })
+        .catch((error) => {
+            if(error.response){
+                console.error(JSON.stringify(error.response.data));
+                speakOutput = error.response.data.output.text[0];
+            }
+        });
+    return speakOutput;
+};
 
-        let slot = Alexa.getSlotValue(handlerInput.requestEnvelope, 'words');
-        let intent = slot;
-        console.log(intent);
-        let alexaId = handlerInput.requestEnvelope.session.user.userId;
-        
-        let speakOutput = intent;
-        let stayAlive = false;
-        await watson.interaction(intent,alexaId)
-        .then((res) => {
-          console.log(res.data);
-          speakOutput = res.data.output.text[0];
-          stayAlive = res.data.context.stayAlive;
-          console.log(res.data.context.descripcion);
-          if(stayAlive){
+const GenericIntent = function(intentName, verb){
+    return {
+        canHandle(handlerInput) {
+            return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+                && Alexa.getIntentName(handlerInput.requestEnvelope) === intentName;
+        },
+        async handle(handlerInput) {
+            console.log(JSON.stringify(handlerInput));
+            let speakOutput = '';
+            if(verb){
+                speakOutput = await interaction(handlerInput, 'words', verb);
+            } else {
+                speakOutput = await interaction(handlerInput, 'words');
+            }
             return handlerInput.responseBuilder
                 .speak(speakOutput)
-                .reprompt('')
                 .getResponse();
-          }
-        })
-        .catch((error) => {
-            console.error(JSON.stringify(error.response.data));
-            speakOutput = error.response.data.output.text[0];
-        });
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .getResponse();
-    }
+        }
+    };
 };
-/*
-const WordsIntentHandler = {
-    canHandle(handlerInput) {
-        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'WordsIntent';
-    },
-    async handle(handlerInput) {
-        console.log(JSON.stringify(handlerInput));
-        console.log(handlerInput.requestEnvelope.request.intent.name);
-        console.log(handlerInput.requestEnvelope.session.user.userId);
-        let alexaId = handlerInput.requestEnvelope.session.user.userId;
-        let slot = Alexa.getSlotValue(handlerInput.requestEnvelope, 'words');
-        let intent = slot;
-        console.log(intent);
-        console.log(Alexa.getDialogState(handlerInput.requestEnvelope));
-        
-        let speakOutput = intent;
-        let stayAlive = false;
-        await watson(intent,alexaId)
-        .then((res) => {
-          console.log(res.data);
-          speakOutput = res.data.output.text[0];
-          stayAlive = res.data.context.stayAlive;
-          console.log(res.data.context.descripcion);
-          if(stayAlive){
-            return handlerInput.responseBuilder
-                .speak(speakOutput)
-                .reprompt('')
-                .getResponse();
-          }
-        })
-        .catch((error) => {
-            console.error(JSON.stringify(error.response.data));
-            speakOutput = error.response.data.output.text[0];
-        });
-        return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .getResponse();
-    }
-};
-*/
 
 /*const FallbackIntentHandler = {
     canHandle(handlerInput) {
@@ -214,8 +201,8 @@ const HelpIntentHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
     },
-    handle(handlerInput) {
-        const speakOutput = 'You can say hello to me! How can I help?';
+    async handle(handlerInput) {
+        const speakOutput = await interaction(handlerInput, null, 'ayuda');
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -230,7 +217,7 @@ const CancelAndStopIntentHandler = {
                 || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
     },
     handle(handlerInput) {
-        const speakOutput = 'Goodbye!';
+        const speakOutput = 'Diners Club está aquí para ayudarte.';
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .getResponse();
@@ -291,7 +278,16 @@ exports.handler = Alexa.SkillBuilders.custom()
         RegisterUserIntentHandler,
         OTPIntentHandler,
         UnlockIntentHandler,
-        EverythingIntentHandler,
+        GenericIntent('CuandoIntent', 'cuándo'),
+        GenericIntent('CuantoIntent', 'cuánto'),
+        GenericIntent('CualIntent', 'cuál'),
+        GenericIntent('QueIntent', 'qué'),
+        GenericIntent('PreguntaIntent', 'pregunta'),
+        GenericIntent('DondeIntent', 'donde'),
+        GenericIntent('QuieroIntent', 'quiero'),
+        //GenericIntent('SiIntent', 'si'),
+        //GenericIntent('NoIntent', 'no'),
+        GenericIntent('EverythingIntent'),
         //FallbackIntentHandler,
         LaunchRequestHandler,
         HelpIntentHandler,

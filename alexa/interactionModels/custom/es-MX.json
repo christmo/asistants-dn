@@ -67,25 +67,13 @@
             }
           ],
           "samples": [
-            "quisiera {words}",
             "hasta {words}",
             "la {words}",
             "el {words}",
             "cómo {words}",
             "tengo {words}",
-            "cuando {words}",
             "consulta {words}",
-            "puedes {words}",
-            "cuándo {words}",
-            "que {words}",
-            "cuánto {words}",
-            "cuanto {words}",
-            "cuál {words}",
-            "qué {words}",
-            "cuantas {words}",
-            "cuales {words}",
-            "cual {words}",
-            "quiero {words}"
+            "puedes {words}"
           ]
         },
         {
@@ -94,60 +82,148 @@
           "samples": [
             "desbloquea mi cuenta"
           ]
-        }
-      ],
-      "types": [
-        {
-          "values": [
-            {
-              "name": {
-                "value": "afirmativo"
-              }
-            },
-            {
-              "name": {
-                "value": "y"
-              }
-            },
-            {
-              "name": {
-                "value": "dame"
-              }
-            },
-            {
-              "name": {
-                "value": "dime"
-              }
-            },
-            {
-              "name": {
-                "value": "si"
-              }
-            }
-          ],
-          "name": "intent_words"
         },
         {
-          "values": [
+          "name": "CuandoIntent",
+          "slots": [
             {
-              "name": {
-                "value": "dame"
-              }
-            },
-            {
-              "name": {
-                "value": "dime"
-              }
-            },
-            {
-              "name": {
-                "value": "puedes"
-              }
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
             }
           ],
-          "name": "BAG_OF_WORDS"
+          "samples": [
+            "cuándo {words}",
+            "cuando {words}"
+          ]
+        },
+        {
+          "name": "SiIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "sí",
+            "si",
+            "si {words}"
+          ]
+        },
+        {
+          "name": "CualIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "cuáles {words}",
+            "cuales {words}",
+            "cual {words}",
+            "cuál {words}"
+          ]
+        },
+        {
+          "name": "QueIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "qué {words}",
+            "que {words}"
+          ]
+        },
+        {
+          "name": "NoIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "no",
+            "no {words}"
+          ]
+        },
+        {
+          "name": "CuantoIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "cuántas {words}",
+            "cuanta {words}",
+            "cuanto {words}",
+            "cuantas {words}",
+            "cuántos {words}",
+            "cuánta {words}",
+            "cuánto {words}"
+          ]
+        },
+        {
+          "name": "PreguntaIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "preguntar {words}",
+            "le puedes preguntar {words}",
+            "pregunta {words}",
+            "y preguntale {words}",
+            "preguntale {words}"
+          ]
+        },
+        {
+          "name": "DondeIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "onde {words}",
+            "donde {words}",
+            "dónde {words}"
+          ]
+        },
+        {
+          "name": "QuieroIntent",
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "yo quisiera {words}",
+            "me urge {words}",
+            "requiero {words}",
+            "me puedes {words}",
+            "por favor {words}",
+            "intento {words}",
+            "ayudame {words}",
+            "quisiera {words}",
+            "necesito {words}",
+            "me gustaría {words}",
+            "yo quiero {words}",
+            "quiero {words}"
+          ]
         }
-      ]
+      ],
+      "types": []
     },
     "dialog": {
       "intents": [
@@ -184,6 +260,21 @@
               }
             }
           ]
+        },
+        {
+          "name": "EverythingIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "words",
+              "type": "AMAZON.SearchQuery",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "delegationStrategy": "ALWAYS"
         }
       ],
       "delegationStrategy": "ALWAYS"
@@ -219,8 +310,17 @@
             "value": "Díctame el número que recibiste en tu celular"
           }
         ]
+      },
+      {
+        "id": "Confirm.Intent.563098569867",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "entendido"
+          }
+        ]
       }
     ]
   },
-  "version": "89"
+  "version": "116"
 }
