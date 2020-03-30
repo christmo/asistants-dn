@@ -1,0 +1,1613 @@
+{
+  "intents": [
+    {
+      "intent": "afirmativo",
+      "examples": [
+        {
+          "text": "si"
+        },
+        {
+          "text": "positivo"
+        },
+        {
+          "text": "de ley"
+        },
+        {
+          "text": "afirmativo"
+        },
+        {
+          "text": "sip"
+        }
+      ],
+      "description": "Para detectar una intensión afirmativa"
+    },
+    {
+      "intent": "registro",
+      "examples": [
+        {
+          "text": "registro"
+        },
+        {
+          "text": "regístrame"
+        },
+        {
+          "text": "registrarme"
+        },
+        {
+          "text": "registra"
+        }
+      ],
+      "description": "Para realizar el proceso de registro"
+    },
+    {
+      "intent": "negativo",
+      "examples": [
+        {
+          "text": "nu"
+        },
+        {
+          "text": "no"
+        },
+        {
+          "text": "nel"
+        },
+        {
+          "text": "negativo"
+        },
+        {
+          "text": "nop"
+        }
+      ],
+      "description": "Para detectar una intensión negativa"
+    },
+    {
+      "intent": "bienvenida",
+      "examples": [
+        {
+          "text": "bienvenido"
+        },
+        {
+          "text": "bienvenida"
+        }
+      ],
+      "description": "Interacción inicial"
+    },
+    {
+      "intent": "modoTasty",
+      "examples": [
+        {
+          "text": "comer"
+        },
+        {
+          "text": "saber si el 12 de marzo es modo tasty"
+        },
+        {
+          "text": "saber si el 1.º de abril es modo tasty"
+        },
+        {
+          "text": "modo test"
+        },
+        {
+          "text": "modo tele"
+        },
+        {
+          "text": "taste"
+        },
+        {
+          "text": "motorist"
+        },
+        {
+          "text": "modo teisti"
+        },
+        {
+          "text": "modo tasty"
+        },
+        {
+          "text": "restaurante"
+        },
+        {
+          "text": "restaurantes"
+        },
+        {
+          "text": "comida"
+        },
+        {
+          "text": "modo taste"
+        }
+      ],
+      "description": "Para obtener información sobre el modo tasty"
+    },
+    {
+      "intent": "fechaMaxima",
+      "examples": [
+        {
+          "text": "hasta cuando es mi fecha de pago"
+        },
+        {
+          "text": "fecha máxima de pago"
+        },
+        {
+          "text": "maxima de pago"
+        },
+        {
+          "text": "fecha máxima"
+        },
+        {
+          "text": "maxima"
+        }
+      ],
+      "description": "Para detectar que quiere la fecha máxima de pago"
+    },
+    {
+      "intent": "fechaCorte",
+      "examples": [
+        {
+          "text": "fecha de corte"
+        },
+        {
+          "text": "corte"
+        },
+        {
+          "text": "fecha de pago"
+        }
+      ],
+      "description": "Para consultar la fecha de corte"
+    },
+    {
+      "intent": "despedida",
+      "examples": [
+        {
+          "text": "adiós"
+        },
+        {
+          "text": "te ves"
+        },
+        {
+          "text": "bye"
+        },
+        {
+          "text": "chao"
+        },
+        {
+          "text": "topes"
+        }
+      ],
+      "description": "Para ver que se despide"
+    },
+    {
+      "intent": "saludo",
+      "examples": [
+        {
+          "text": "hola"
+        },
+        {
+          "text": "que más"
+        },
+        {
+          "text": "kiubo"
+        },
+        {
+          "text": "que dice"
+        },
+        {
+          "text": "holi"
+        },
+        {
+          "text": "que mais"
+        }
+      ],
+      "description": "para saludar"
+    },
+    {
+      "intent": "ayuda",
+      "examples": [
+        {
+          "text": "puedo decir"
+        },
+        {
+          "text": "puede hacer"
+        },
+        {
+          "text": "ayuda"
+        },
+        {
+          "text": "decir"
+        },
+        {
+          "text": "ayudame"
+        },
+        {
+          "text": "puedo hacer"
+        }
+      ],
+      "description": "Para solicitar ayuda"
+    },
+    {
+      "intent": "empezar",
+      "examples": [
+        {
+          "text": "empezar"
+        },
+        {
+          "text": "comenzar"
+        }
+      ],
+      "description": "para empezar"
+    },
+    {
+      "intent": "saldoTarjeta",
+      "examples": [
+        {
+          "text": "valor a pagar"
+        },
+        {
+          "text": "cuanto debo"
+        },
+        {
+          "text": "monto"
+        },
+        {
+          "text": "cuál es el saldo"
+        },
+        {
+          "text": "monto a pagar"
+        },
+        {
+          "text": "saldo"
+        },
+        {
+          "text": "cuál es mi saldo"
+        }
+      ],
+      "description": "Para detectar cuál es el saldo de la tarjeta de crédito"
+    }
+  ],
+  "entities": [
+    {
+      "entity": "sys-number",
+      "values": []
+    },
+    {
+      "entity": "sys-date",
+      "values": []
+    },
+    {
+      "entity": "condicionales",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "que",
+          "synonyms": [
+            "qué",
+            "que"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "cuanto",
+          "synonyms": [
+            "cuánto",
+            "cuanto"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "cuando",
+          "synonyms": [
+            "cuando",
+            "cuándo"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "donde",
+          "synonyms": [
+            "donde",
+            "onde"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "tipoTarjeta",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "visa",
+          "synonyms": [
+            "visa",
+            "titanium",
+            "visa titanium",
+            "titanio"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "todas",
+          "synonyms": [
+            "todas "
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "discover",
+          "synonyms": [
+            "discover"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "diners",
+          "synonyms": [
+            "diners",
+            "diners club",
+            "dynus"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "dialog_nodes": [
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_4_1584372747230",
+      "context": {
+        "tarjeta": "TITANIUM VISA"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_6_1584372747230",
+      "previous_sibling": "handler_5_1584372747230"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_4_1584372747230",
+      "context": {
+        "tipoTarjeta_VISA": "@tipoTarjeta:visa"
+      },
+      "conditions": "@tipoTarjeta:visa",
+      "event_name": "input",
+      "dialog_node": "handler_5_1584372747230"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "En la ciudad de QUITO, Modo Tasty esta presente en los siguientes establecimientos: $establecimiento."
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_10_1583934845941",
+      "conditions": "@condicionales:donde && $ciudad == 'Quito'",
+      "dialog_node": "response_2_1584738868232",
+      "previous_sibling": "response_2_1584052026508"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "$nombre, recuerda que puedes disfrutar del MODO TASTY todos los miércoles, a partir del $fechaDesde hasta $fechaHasta"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_10_1583934845941",
+      "context": {
+        "stayAlive": false
+      },
+      "conditions": "@condicionales:cuando || @condicionales:cuanto",
+      "dialog_node": "response_5_1583954076882",
+      "previous_sibling": "response_7_1584739113729"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "El @sys-date es miercoles MODO TASTY. Fecha desde: $fechaDesde. Fecha Hasta: $fechaHasta"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_10_1583934845941",
+      "context": {
+        "stayAlive": false
+      },
+      "conditions": "@sys-date > $fechaDesde && @sys-date < $fechaHasta && @sys-date.day_of_week == 'wednesday'",
+      "dialog_node": "response_4_1583946864675",
+      "previous_sibling": "response_5_1583954076882"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "En la ciudad de GUAYAQUIL, Modo Tasty esta presente en los siguientes establecimientos: $establecimiento."
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_10_1583934845941",
+      "conditions": "@condicionales:donde && $ciudad == 'Guayaquil'",
+      "dialog_node": "response_7_1584739113729",
+      "previous_sibling": "response_2_1584738868232"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "El @sys-date no es miércoles modo tasty."
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_10_1583934845941",
+      "context": {
+        "stayAlive": false
+      },
+      "conditions": "@sys-date < $fechaDesde && @sys-date > $fechaHasta && @sys-date.day_of_week != 'wednesday'",
+      "dialog_node": "response_3_1583946979247",
+      "previous_sibling": "response_4_1583946864675"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "MODO TASTY te brinda el 50% de descuento en toda tu cuenta en restaurantes seleccionados. Aplican restricciones"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_10_1583934845941",
+      "context": {
+        "sendMail": true
+      },
+      "conditions": "@condicionales:que",
+      "dialog_node": "response_2_1584052026508"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "Aún no hemos validado tu cuenta. Para validar tu código O T P favor di: \"Estoy listo para validar mi cuenta\"."
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_7_1584024378442",
+      "context": {
+        "stayAlive": false
+      },
+      "conditions": "$estado == 'pendienteValidacion'",
+      "dialog_node": "response_4_1584128834415",
+      "previous_sibling": "response_5_1584046809321"
+    },
+    {
+      "type": "slot",
+      "parent": "node_7_1584024378442",
+      "variable": "$cedula",
+      "dialog_node": "slot_2_1584034141576",
+      "previous_sibling": "response_4_1584128834415"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "¿En qué te puedo ayudar hoy?\".",
+            "$nombre, bienvenido nuevamente ¿En qué te puedo ayudar hoy?\".",
+            "Recuerda, para usar todas las características de tu asistente virtual, por favor di: \"Regístrame en DINERS CLUB\"."
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_7_1584024378442",
+      "context": {},
+      "conditions": "$estado == 'noValidado' || $estado == 'bloqueado'",
+      "dialog_node": "response_5_1584046809321",
+      "previous_sibling": "response_2_1584046732376"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Bienvenido $nombre ¿En qué te puedo ayudar hoy?"
+              },
+              {
+                "text": "Recuerda que con DINERS CLUB puedes consultar tus saldos, fechas de corte, promociones y mucho más. ¿Qué deseas hacer hoy?."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "random"
+          }
+        ]
+      },
+      "parent": "node_7_1584024378442",
+      "context": {},
+      "conditions": "$estado == 'validado'",
+      "dialog_node": "response_2_1584046732376"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_11_1584723444072",
+      "context": {
+        "tarjeta": "DISCOVER"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_13_1584723444072",
+      "previous_sibling": "handler_12_1584723444072"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_11_1584723444072",
+      "context": {
+        "tipoTarjeta": "@tipoTarjeta:discover"
+      },
+      "conditions": "@tipoTarjeta:discover",
+      "event_name": "input",
+      "dialog_node": "handler_12_1584723444072"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_5_1584723444072",
+      "context": {
+        "tarjeta": "TITANIUM VISA"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_7_1584723444072",
+      "previous_sibling": "handler_6_1584723444072"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_5_1584723444072",
+      "context": {
+        "tipoTarjeta_VISA": "@tipoTarjeta:visa"
+      },
+      "conditions": "@tipoTarjeta:visa",
+      "event_name": "input",
+      "dialog_node": "handler_6_1584723444072"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_10_1584372747230",
+      "context": {
+        "tarjeta": "DISCOVER"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_12_1584372747230",
+      "previous_sibling": "handler_11_1584372747230"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_10_1584372747230",
+      "context": {
+        "tipoTarjeta": "@tipoTarjeta:discover"
+      },
+      "conditions": "@tipoTarjeta:discover",
+      "event_name": "input",
+      "dialog_node": "handler_11_1584372747230"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_13_1583859387224",
+      "context": {
+        "tarjeta": "DISCOVER"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_15_1583859387224",
+      "previous_sibling": "handler_14_1583859387224"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_13_1583859387224",
+      "context": {
+        "tipoTarjeta": "@tipoTarjeta:discover"
+      },
+      "conditions": "@tipoTarjeta:discover",
+      "event_name": "input",
+      "dialog_node": "handler_14_1583859387224"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_7_1583859387224",
+      "context": {
+        "tarjeta": "TITANIUM VISA"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_9_1583859387224",
+      "previous_sibling": "handler_8_1583859387224"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_7_1583859387224",
+      "context": {
+        "tipoTarjeta_VISA": "@tipoTarjeta:visa"
+      },
+      "conditions": "@tipoTarjeta:visa",
+      "event_name": "input",
+      "dialog_node": "handler_8_1583859387224"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_10_1583858749113",
+      "context": {
+        "tarjeta": "DINERS CLUB"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_6_1583858749119",
+      "previous_sibling": "handler_7_1583858749119"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_10_1583858749113",
+      "context": {
+        "tipoTarjeta": "@tipoTarjeta:diners"
+      },
+      "conditions": "@tipoTarjeta:diners",
+      "event_name": "input",
+      "dialog_node": "handler_7_1583858749119"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_1_1584372747220",
+      "variable": "$tipoTarjeta",
+      "dialog_node": "slot_7_1584372747230",
+      "previous_sibling": "slot_4_1584372747230"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "El saldo a pagar en tu tarjeta DINERS CLUB es USD $$saldoActual"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_1_1584372747220",
+      "context": {
+        "stayAlive": true
+      },
+      "disabled": true,
+      "conditions": "@tipoTarjeta:diners",
+      "dialog_node": "response_14_1584372747230",
+      "previous_sibling": "response_13_1584372747230"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "El saldo a pagar en tu tarjeta TITANIUM VISA es USD $1140, para tu tarjeta DINERS CLUB es USD $52.25, y finalmente, en tu tarjeta DISCOVER debes USD $10.23"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_1_1584372747220",
+      "context": {
+        "stayAlive": true
+      },
+      "disabled": true,
+      "conditions": "@tipoTarjeta:todas",
+      "dialog_node": "response_16_1584372747230",
+      "previous_sibling": "response_15_1584372747230"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_1_1584372747220",
+      "variable": "$tipoTarjeta_VISA",
+      "dialog_node": "slot_4_1584372747230",
+      "previous_sibling": "response_16_1584372747230"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_1_1584372747220",
+      "variable": "$tipoTarjeta",
+      "dialog_node": "slot_10_1584372747230",
+      "previous_sibling": "slot_7_1584372747230"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "El saldo a pagar en tu tarjeta DISCOVER es USD $$saldoActual"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_1_1584372747220",
+      "context": {
+        "stayAlive": true
+      },
+      "disabled": true,
+      "conditions": "@tipoTarjeta:discover",
+      "dialog_node": "response_15_1584372747230",
+      "previous_sibling": "response_14_1584372747230"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "El saldo a pagar en tu tarjeta TITANIUM VISA es USD $$saldoActual. ¿Deseas hacer otra consulta?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_1_1584372747220",
+      "context": {
+        "stayAlive": true
+      },
+      "disabled": true,
+      "conditions": "@tipoTarjeta:visa",
+      "dialog_node": "response_13_1584372747230"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_2_1584723444067",
+      "variable": "$tipoTarjeta",
+      "dialog_node": "slot_8_1584723444072",
+      "previous_sibling": "slot_5_1584723444072"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "El saldo a pagar en tu tarjeta TITANIUM VISA es USD $1140, para tu tarjeta DINERS CLUB es USD $52.25, y finalmente, en tu tarjeta DISCOVER debes USD $10.23"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_2_1584723444067",
+      "context": {
+        "stayAlive": true
+      },
+      "disabled": true,
+      "conditions": "@tipoTarjeta:todas",
+      "dialog_node": "response_17_1584723444072",
+      "previous_sibling": "response_16_1584723444072"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_2_1584723444067",
+      "variable": "$tipoTarjeta_VISA",
+      "dialog_node": "slot_5_1584723444072",
+      "previous_sibling": "response_17_1584723444072"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "El saldo a pagar en tu tarjeta DINERS CLUB es USD $$saldoActual"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_2_1584723444067",
+      "context": {
+        "stayAlive": true
+      },
+      "disabled": true,
+      "conditions": "@tipoTarjeta:diners",
+      "dialog_node": "response_15_1584723444072",
+      "previous_sibling": "response_14_1584723444072"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_2_1584723444067",
+      "variable": "$tipoTarjeta",
+      "dialog_node": "slot_11_1584723444072",
+      "previous_sibling": "slot_8_1584723444072"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "El saldo a pagar en tu tarjeta DISCOVER es USD $$saldoActual"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_2_1584723444067",
+      "context": {
+        "stayAlive": true
+      },
+      "disabled": true,
+      "conditions": "@tipoTarjeta:discover",
+      "dialog_node": "response_16_1584723444072",
+      "previous_sibling": "response_15_1584723444072"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "El saldo a pagar en tu tarjeta TITANIUM VISA es USD $$saldoActual. ¿Deseas hacer otra consulta?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1584723444067",
+      "context": {
+        "stayAlive": true
+      },
+      "disabled": true,
+      "conditions": "@tipoTarjeta:visa",
+      "dialog_node": "response_14_1584723444072"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_10_1583859387224",
+      "context": {
+        "tarjeta": "DINERS CLUB"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_12_1583859387224",
+      "previous_sibling": "handler_11_1583859387224"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_10_1583859387224",
+      "context": {
+        "tipoTarjeta": "@tipoTarjeta:diners"
+      },
+      "conditions": "@tipoTarjeta:diners",
+      "event_name": "input",
+      "dialog_node": "handler_11_1583859387224"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_10_1583858665186",
+      "context": {
+        "tarjeta": "TITANIUM VISA"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_3_1583858665220",
+      "previous_sibling": "handler_1_1583858665220"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_10_1583858665186",
+      "context": {
+        "tipoTarjeta_VISA": "@tipoTarjeta:visa"
+      },
+      "conditions": "@tipoTarjeta:visa",
+      "event_name": "input",
+      "dialog_node": "handler_1_1583858665220"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_2_1584034141576",
+      "event_name": "focus",
+      "dialog_node": "handler_4_1584034141614",
+      "previous_sibling": "handler_2_1584034141614"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_2_1584034141576",
+      "context": {
+        "cedula": "$registro == true"
+      },
+      "conditions": "$registro == true",
+      "event_name": "input",
+      "dialog_node": "handler_2_1584034141614"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "El saldo a pagar en tu tarjeta DISCOVER es USD $$totPagar"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_10_1583856317395",
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "@tipoTarjeta:discover",
+      "dialog_node": "response_10_1583859285698",
+      "previous_sibling": "response_5_1583859284065"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "El saldo a pagar en tu tarjeta DINERS CLUB es USD $$totPagar. ¿Te puedo ayudar en algo más?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_10_1583856317395",
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "@tipoTarjeta:diners",
+      "dialog_node": "response_5_1583859284065",
+      "previous_sibling": "response_1_1583859233409"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_10_1583856317395",
+      "variable": "$tipoTarjeta",
+      "dialog_node": "slot_1_1583858785051",
+      "previous_sibling": "slot_10_1583858749113"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_10_1583856317395",
+      "variable": "$tipoTarjeta",
+      "dialog_node": "slot_10_1583858749113",
+      "previous_sibling": "slot_10_1583858665186"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "El saldo a pagar en tu tarjeta TITANIUM VISA es USD $1140, para tu tarjeta DINERS CLUB es USD $52.25, y finalmente, en tu tarjeta DISCOVER debes USD $10.23"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_10_1583856317395",
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "@tipoTarjeta:todas",
+      "dialog_node": "response_9_1583866975724",
+      "previous_sibling": "response_10_1583859285698"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_10_1583856317395",
+      "variable": "$tipoTarjeta_VISA",
+      "dialog_node": "slot_10_1583858665186",
+      "previous_sibling": "response_9_1583866975724"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "El saldo a pagar en tu tarjeta TITANIUM VISA es USD $$totPagar. ¿Deseas hacer otra consulta?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_10_1583856317395",
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "@tipoTarjeta:visa",
+      "dialog_node": "response_1_1583859233409"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_1_1583858785051",
+      "context": {
+        "tarjeta": "DISCOVER"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_1_1583858785058",
+      "previous_sibling": "handler_9_1583858785057"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_1_1583858785051",
+      "context": {
+        "tipoTarjeta": "@tipoTarjeta:discover"
+      },
+      "conditions": "@tipoTarjeta:discover",
+      "event_name": "input",
+      "dialog_node": "handler_9_1583858785057"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_8_1584723444072",
+      "context": {
+        "tarjeta": "DINERS CLUB"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_10_1584723444072",
+      "previous_sibling": "handler_9_1584723444072"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_8_1584723444072",
+      "context": {
+        "tipoTarjeta": "@tipoTarjeta:diners"
+      },
+      "conditions": "@tipoTarjeta:diners",
+      "event_name": "input",
+      "dialog_node": "handler_9_1584723444072"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "La fecha  máxima de pago de tus tarjetas TITANIUM VISA, DINERS CLUB y DISCOVER es el $fecMaxPago"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_4_1583859387216",
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "@tipoTarjeta:todas",
+      "dialog_node": "response_9_1583867876185",
+      "previous_sibling": "response_18_1583859387224"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "La fecha  máxima de pago de tu tarjeta DINERS CLUB es el $fecMaxPago"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_4_1583859387216",
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "@tipoTarjeta:diners",
+      "dialog_node": "response_17_1583859387224",
+      "previous_sibling": "response_16_1583859387224"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "La fecha  máxima de pago de tu tarjeta DISCOVER es el $fecMaxPago"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_4_1583859387216",
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "@tipoTarjeta:discover",
+      "dialog_node": "response_18_1583859387224",
+      "previous_sibling": "response_17_1583859387224"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_4_1583859387216",
+      "variable": "$tipoTarjeta",
+      "dialog_node": "slot_10_1583859387224",
+      "previous_sibling": "slot_7_1583859387224"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_4_1583859387216",
+      "variable": "$tipoTarjeta",
+      "dialog_node": "slot_13_1583859387224",
+      "previous_sibling": "slot_10_1583859387224"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_4_1583859387216",
+      "variable": "$tipoTarjeta_VISA",
+      "dialog_node": "slot_7_1583859387224",
+      "previous_sibling": "response_9_1583867876185"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "La fecha máxima de pago de tu tarjeta TITANIUM VISA es el $fecMaxPago"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_4_1583859387216",
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "@tipoTarjeta:visa",
+      "dialog_node": "response_16_1583859387224"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "¿De qué tarjeta desea conocer su saldo?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_7_1584372747230",
+      "context": {
+        "tarjeta": "DINERS CLUB"
+      },
+      "event_name": "focus",
+      "dialog_node": "handler_9_1584372747230",
+      "previous_sibling": "handler_8_1584372747230"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_7_1584372747230",
+      "context": {
+        "tipoTarjeta": "@tipoTarjeta:diners"
+      },
+      "conditions": "@tipoTarjeta:diners",
+      "event_name": "input",
+      "dialog_node": "handler_8_1584372747230"
+    },
+    {
+      "type": "standard",
+      "title": "REGISTRO",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Para registrarte, por favor di: \"Regístrame en DINERS CLUB\""
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#registro",
+      "dialog_node": "node_4_1584117370605",
+      "previous_sibling": "node_10_1583934845941"
+    },
+    {
+      "type": "standard",
+      "title": "EVALÚA SERVICIO - SALDO A PAGAR TARJETA",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {
+        "service": "SRV0001",
+        "stayAlive": true
+      },
+      "metadata": {
+        "_customization": {
+          "mcr": false
+        }
+      },
+      "conditions": "#saldoTarjeta && $estado == 'validado' && $SRVTarjetas == false",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_1_1584372747220",
+      "previous_sibling": "node_7_1584024378442"
+    },
+    {
+      "type": "standard",
+      "title": "EVALÚA SERVICIO - FECHA MÁXIMA PAGO",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {
+        "service": "SRV0001",
+        "stayAlive": true
+      },
+      "metadata": {
+        "_customization": {
+          "mcr": false
+        }
+      },
+      "conditions": "#fechaMaxima && $estado == 'validado' && $SRVTarjetas == false",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_2_1584723444067",
+      "previous_sibling": "node_8_1584370469319"
+    },
+    {
+      "type": "standard",
+      "title": "Control Excepciones - SALDO A PAGAR TARJETA",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Para acceder a esta función debes estar registrado en la Skill de DINERS CLUB. Para registrarte por favor di \"Regístrame en DINERS CLUB\"."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "#saldoTarjeta && $estado != 'validado'",
+      "dialog_node": "node_8_1584370469319",
+      "previous_sibling": "node_2_1584974884543"
+    },
+    {
+      "type": "standard",
+      "title": "En otras cosas",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "No le he entendido. Intente reformular su pregunta"
+              },
+              {
+                "text": "¿Puede expresarse con otras palabras? No le he entendido."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "anything_else",
+      "dialog_node": "En otras cosas",
+      "previous_sibling": "node_1_1584977637222",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "PRIV - SALDO A PAGAR TARJETA",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#saldoTarjeta &&  $estado == \"validado\" && $SRVTarjetas == true",
+      "dialog_node": "node_10_1583856317395",
+      "previous_sibling": "node_1_1584372747220",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "PRIV - FECHA MÁXIMA DE PAGO",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#fechaMaxima && $estado == 'validado' && $SRVTarjetas == true",
+      "dialog_node": "node_4_1583859387216",
+      "previous_sibling": "node_2_1584723444067",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "AYUDA",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "DINERS CLUB te ofrece actualmente: consulta de saldos, consulta de fechas máximas de pago y además consulta de promociones como el MODO TASTY."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#ayuda",
+      "dialog_node": "node_1_1584977637222",
+      "previous_sibling": "node_4_1584117370605"
+    },
+    {
+      "type": "standard",
+      "title": "EVALÚA SERVICIO - CAMPAÑAS",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {
+        "service": "SRV0002",
+        "sendMail": false,
+        "stayAlive": true
+      },
+      "conditions": "#modoTasty && $SRVCampanas == false",
+      "dialog_node": "node_6_1585153224308",
+      "previous_sibling": "node_1_1584717213965"
+    },
+    {
+      "type": "standard",
+      "title": "Control Excepciones BLOQUEADO - SALDO A PAGAR TARJETA",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Tu cuenta se encuentra bloqueada temporalmente. Para desbloquearla por favor di, \"Desbloquea mi cuenta\"."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "#saldoTarjeta && $estado == 'bloqueado'",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_2_1584974884543",
+      "previous_sibling": "node_10_1583856317395"
+    },
+    {
+      "type": "standard",
+      "title": "PUBLIC - CAMPAÑAS",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#modoTasty && $SRVCampanas == true",
+      "dialog_node": "node_10_1583934845941",
+      "previous_sibling": "node_6_1585153224308",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Control Excepciones BLOQUEO - FECHA MÁXIMA DE PAGO",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Tu cuenta se encuentra bloqueada temporalmente. Para desbloquearla por favor di, \"Desbloquea mi cuenta\"."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "#fechaMaxima && $estado == 'bloqueado'",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_1_1584974724510",
+      "previous_sibling": "node_4_1583859387216"
+    },
+    {
+      "type": "standard",
+      "title": "Control Excepciones - FECHA MÁXIMA DE PAGO",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Para acceder a la consulta de tu fecha máxima de pago, debes estar registrado en la Skill de DINERS CLUB. Para registrarte por favor di \"Regístrame en DINERS CLUB\"."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {
+        "stayAlive": true
+      },
+      "conditions": "#fechaMaxima && $estado != 'validado'",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_1_1584717213965",
+      "previous_sibling": "node_1_1584974724510"
+    },
+    {
+      "type": "standard",
+      "title": "Bienvenida",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#bienvenida || #afirmativo",
+      "dialog_node": "node_7_1584024378442"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "disambiguation": {
+      "prompt": "Querías decir:",
+      "enabled": false,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "None of the above."
+    },
+    "system_entities": {
+      "enabled": true
+    },
+    "human_agent_assist": {
+      "prompt": "Querías decir:"
+    }
+  },
+  "learning_opt_out": false,
+  "name": "ALEXA",
+  "language": "es",
+  "description": "Pruebas con Alexa"
+}
