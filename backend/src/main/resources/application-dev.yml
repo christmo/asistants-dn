@@ -1,0 +1,81 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overridden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+#
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+logging:
+    level:
+        ROOT: INFO
+        ec.com.dinersclub.chatbot: INFO
+
+spring:
+    application:
+        name: flowDataUpdateBackend
+    profiles:
+        active: dev
+    jackson:
+        serialization.write_dates_as_timestamps: false
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:postgresql://chatbotdev.cmh49aj35zu3.us-west-2.rds.amazonaws.com:5432/be_chatbot_flow_alexa
+        username: dbuser
+        password: WKVHEUBQZENBDYMQ
+    jpa:
+      database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+      database: POSTGRESQL
+      show-sql: true
+      properties:
+              hibernate.id.new_generator_mappings: true
+              hibernate.cache.use_second_level_cache: false
+              hibernate.cache.use_query_cache: false
+              hibernate.generate_statistics: true
+              hibernate.ddl-auto: update
+              hibernate.generate-ddl: true
+              hibernate.temp:
+                   use_jdbc_metadata_defaults: false
+    messages:
+        basename: i18n/messages
+    mvc:
+        favicon:
+            enabled: false
+    thymeleaf:
+        mode: XHTML
+    batch:
+      initialize-schema: always
+      job:
+        enabled: false
+
+server:
+    port: 8280
+    servlet:
+        context-path: /alexa-demo
+# =============================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# =============================================================================
+application:
+  backend-url: http://be-chatbot-admin-service-qa:8280/chatbot-admin-backend/api/
+  proxy-enabled: false
+  proxy-address: 192.168.18.35
+  proxy_port: 9090
+  watson_workspace: 62bbcf89-da9f-48ea-8fd0-687118f38e89
+  watson_username: b49e963f-f7b6-4f3b-81a8-e3f7ebbc901a
+  watson_password: HBuglluaGQtu
+  watson_version: 2018-06-06
+  card-service-backend: http://45.65.203.4:8905/as/consultaTarjetas
+  flow-type-id: 1557
+  backend-user: user
+  backend-password: user
+  intent-backend-url: http://be-chatbot-flow-interaction-service-qa:8283/intent/api/
+  mailer-backend-url: http://be-chatbot-admin-service-qa:8280/chatbot-admin-backend/api/
+  big-url-front-end: https://chatdev.dce.ec:31004/alexa-demo/#/?token=
+  flow-name: ACTUALIZACION-DATOS
+  otp-service-backend: http://10.10.176.150

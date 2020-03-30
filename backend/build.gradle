@@ -1,0 +1,140 @@
+/**
+ * Gradle configuration for Gradle 6.0.1
+ * @author Frank Rosales
+ */
+
+buildscript {
+    ext {
+        springBootVersion = '2.2.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'eclipse'
+    id 'war'
+    id "net.ltgt.apt-idea" version "0.21"
+}
+
+apply plugin: "net.ltgt.apt"
+group = 'ec.com.dinersclub.chatbot'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://52.24.12.145:8081/repository/maven-public/"
+    }
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.RELEASE")
+    set('springBootVersion', "2.2.2.RELEASE")
+    set('mapstructVersion', "1.3.1.Final")
+    set('lombokVersion', "1.18.10")
+    set('log4jVersion', "1.2.17")
+    set('swaggerVersion', "2.1.0")
+    set('swaggerAnnotationsVersion', "1.6.0")
+    set('watsonVersion', "6.6.0")
+    set('owaspVersion', "20191001.1")
+    set('postgresqlVersion', "42.2.8")
+    set('mapstruct_version', "1.3.1.Final")
+    set('chatbotNluCoreVersion', "1.1.0")
+    set('hikaricpVersion', "3.4.1")
+    set('hibernateVersion', "5.4.10.Final")
+    set('mapstructVersion', "1.3.1.Final")
+    set('javaSdkSqSVersion', "1.11.693")
+}
+
+dependencies {
+	// import JHipster dependencies BOM
+    implementation platform("io.github.jhipster:jhipster-dependencies:${jhipster_dependencies_version}" )
+    
+    // Use ", version: jhipster_dependencies_version, changing: true" if you want
+    // to use a SNAPSHOT release instead of a stable release
+    implementation group: "io.github.jhipster", name: "jhipster-framework"
+    
+    implementation "org.springframework.boot:spring-boot-starter-batch:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-core', version: "${javaSdkSqSVersion}"
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: "${javaSdkSqSVersion}"
+    implementation "com.amazonaws:jmespath-java:${javaSdkSqSVersion}"
+
+    implementation "com.zaxxer:HikariCP:${hikaricpVersion}"
+    implementation "org.hibernate:hibernate-core:${hibernateVersion}"
+
+    implementation "ec.com.diners.chatbot.nlu:chatbot-nlu-core:${chatbotNluCoreVersion}"
+    implementation "com.ibm.watson.developer_cloud:java-sdk:${watsonVersion}"
+    
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    
+    implementation group: 'io.swagger', name: 'swagger-annotations', version: "${swaggerAnnotationsVersion}"
+    implementation group: 'com.googlecode.owasp-java-html-sanitizer', name: 'owasp-java-html-sanitizer', version: "${owaspVersion}"
+    implementation group: 'log4j', name: 'log4j', version: "${log4jVersion}"
+    implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: "${mapstructVersion}"         
+    
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
+    compileOnly "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    annotationProcessor "org.hibernate:hibernate-jpamodelgen:${hibernateVersion}"
+
+    runtime "org.postgresql:postgresql:${postgresqlVersion}"
+
+    //providedRuntime "org.springframework.boot:spring-boot-starter-tomcat:${springBootVersion}"
+    
+    //providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.batch:spring-batch-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    compile group: 'io.swagger.core.v3', name: 'swagger-annotations', version: "${swaggerVersion}"
+    
+    compile ('com.amazonaws:aws-java-sdk-s3')
+    
+    compile('org.apache.tomcat.embed:tomcat-embed-jasper:8.0.47')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

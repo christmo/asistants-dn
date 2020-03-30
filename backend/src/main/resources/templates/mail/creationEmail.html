@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{email.activation.title}">Sistema Inscora creación de usuario.</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}" />
+    </head>
+    <body>
+        <p th:text="#{email.activation.greeting(${user.login})}">
+            Estimado
+        </p>
+        <p th:text="#{email.creation.text1}">
+            Su cuenta en el sistema Inscora ha sido creada exitosamente. Por favor ingrese en a la siguiente URL para la activación
+        </p>
+        <p>
+            <a th:with="url=(@{|${baseUrl}/#/changePassword?changePassword=${user.resetKey}|})" th:href="${url}"
+            th:text="${url}">Login link</a>
+        </p>
+        <p>
+            <span th:text="#{email.activation.text2}">Saludos, </span>
+            <br/>
+            <em th:text="#{email.signature}">Inscora.</em>
+        </p>
+    </body>
+</html>

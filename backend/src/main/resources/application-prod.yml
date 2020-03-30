@@ -1,0 +1,98 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overridden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+#
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+
+logging:
+    level:
+        ROOT: INFO
+        ec.com.dinersclub.chatbot.flowrefinancedbackend: INFO
+        io.github.jhipster: INFO
+# ===================================================================
+
+spring:
+    application:
+        name: flowDataUpdateBackend
+    profiles:
+        active: prod
+    jackson:
+        serialization.write_dates_as_timestamps: false
+    datasource:
+            type: com.zaxxer.hikari.HikariDataSource
+            url: jdbc:postgresql://52.40.163.165:5460/chatbot_data_update_prod
+            username: cbusrdb
+            password: WKVHEUBQZENBDYMQ
+    jpa:
+      database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+      database: POSTGRESQL
+      show-sql: false
+      properties:
+              hibernate.id.new_generator_mappings: true
+              hibernate.cache.use_second_level_cache: false
+              hibernate.cache.use_query_cache: false
+              hibernate.generate_statistics: true
+              hibernate.ddl-auto: update
+              hibernate.generate-ddl: true
+              hibernate.temp:
+                   use_jdbc_metadata_defaults: false
+      generate-ddl: true
+      hibernate:
+        ddl-auto: update
+    messages:
+        basename: i18n/messages
+    mvc:
+        favicon:
+            enabled: false
+    thymeleaf:
+        mode: XHTML
+    servlet:
+      multipart:
+        max-file-size: 200MB
+        max-request-size: 200MB
+    batch:
+        initialize-schema: always
+        job:
+          enabled: false
+
+server:
+  port: 8445
+  ssl:
+    key-store: /etc/ssl/certs/clientcert.p12
+    key-store-password: Pentasec1200
+    key-store-type: JKS
+    enabled: true
+  servlet:
+    context-path: /alexa-demo
+
+
+
+
+# =============================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# =============================================================================
+application:
+  backend-url: https://chat.dce.ec:30000/chatbot-admin-backend/api/
+  proxy-enabled: false
+  proxy-address: 192.168.18.35
+  proxy_port: 9090
+  watson_workspace: e3607750-0430-438b-a1d8-98f0965dc4bb
+  watson_api_key: UPAaIIWh51-m7gaoaZpcYFHAXkDJa2MR8792K1LZq3P7
+  watson_version: 2018-06-06
+  card-service-backend: http://45.65.203.4:8905/as/consultaTarjetas
+  flow-type-id: 1557
+  backend-user: user
+  backend-password: user
+  intent-backend-url: https://chat.dce.ec:30005/intent/api/
+  mailer-backend-url: http://ec2-52-40-163-165.us-west-2.compute.amazonaws.com:30000/chatbot-admin-backend/api/
+  big-url-front-end: https://b.dce.ec/a/
+  flow-name: ACTUALIZACION-DATOS
+  otp-service-backend: http://10.10.176.150
