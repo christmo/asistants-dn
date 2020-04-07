@@ -1,0 +1,799 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.12 (Ubuntu 10.12-2.pgdg19.10+1)
+-- Dumped by pg_dump version 10.12 (Ubuntu 10.12-2.pgdg19.10+1)
+
+-- Started on 2020-04-07 12:45:44 -05
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3008 (class 1262 OID 17189)
+-- Name: be_chatbot_flow_alexa; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE be_chatbot_flow_alexa WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';
+
+
+ALTER DATABASE be_chatbot_flow_alexa OWNER TO postgres;
+
+\connect be_chatbot_flow_alexa
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 1 (class 3079 OID 13051)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 3010 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 199 (class 1259 OID 17218)
+-- Name: batch_job_execution; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.batch_job_execution (
+    job_execution_id bigint NOT NULL,
+    version bigint,
+    job_instance_id bigint NOT NULL,
+    create_time timestamp without time zone NOT NULL,
+    start_time timestamp without time zone,
+    end_time timestamp without time zone,
+    status character varying(10),
+    exit_code character varying(2500),
+    exit_message character varying(2500),
+    last_updated timestamp without time zone,
+    job_configuration_location character varying(2500)
+);
+
+
+ALTER TABLE public.batch_job_execution OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 17265)
+-- Name: batch_job_execution_context; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.batch_job_execution_context (
+    job_execution_id bigint NOT NULL,
+    short_context character varying(2500) NOT NULL,
+    serialized_context text
+);
+
+
+ALTER TABLE public.batch_job_execution_context OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 17231)
+-- Name: batch_job_execution_params; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.batch_job_execution_params (
+    job_execution_id bigint NOT NULL,
+    type_cd character varying(6) NOT NULL,
+    key_name character varying(100) NOT NULL,
+    string_val character varying(250),
+    date_val timestamp without time zone,
+    long_val bigint,
+    double_val double precision,
+    identifying character(1) NOT NULL
+);
+
+
+ALTER TABLE public.batch_job_execution_params OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 17280)
+-- Name: batch_job_execution_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.batch_job_execution_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.batch_job_execution_seq OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 17211)
+-- Name: batch_job_instance; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.batch_job_instance (
+    job_instance_id bigint NOT NULL,
+    version bigint,
+    job_name character varying(100) NOT NULL,
+    job_key character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.batch_job_instance OWNER TO postgres;
+
+--
+-- TOC entry 206 (class 1259 OID 17282)
+-- Name: batch_job_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.batch_job_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.batch_job_seq OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 17239)
+-- Name: batch_step_execution; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.batch_step_execution (
+    step_execution_id bigint NOT NULL,
+    version bigint NOT NULL,
+    step_name character varying(100) NOT NULL,
+    job_execution_id bigint NOT NULL,
+    start_time timestamp without time zone NOT NULL,
+    end_time timestamp without time zone,
+    status character varying(10),
+    commit_count bigint,
+    read_count bigint,
+    filter_count bigint,
+    write_count bigint,
+    read_skip_count bigint,
+    write_skip_count bigint,
+    process_skip_count bigint,
+    rollback_count bigint,
+    exit_code character varying(2500),
+    exit_message character varying(2500),
+    last_updated timestamp without time zone
+);
+
+
+ALTER TABLE public.batch_step_execution OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 17252)
+-- Name: batch_step_execution_context; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.batch_step_execution_context (
+    step_execution_id bigint NOT NULL,
+    short_context character varying(2500) NOT NULL,
+    serialized_context text
+);
+
+
+ALTER TABLE public.batch_step_execution_context OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 17278)
+-- Name: batch_step_execution_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.batch_step_execution_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.batch_step_execution_seq OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 17190)
+-- Name: device_mapping; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.device_mapping (
+    user_id_device character varying(255) NOT NULL,
+    identification character varying(255),
+    state character varying(255),
+    fecha_bloqueo timestamp with time zone,
+    remaining_attempts integer,
+    tipo character varying(255)
+);
+
+
+ALTER TABLE public.device_mapping OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1259 OID 17198)
+-- Name: flow_alexa; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.flow_alexa (
+    id character varying(255) NOT NULL,
+    campaign character varying(255),
+    card_number character varying(255),
+    cellphone character varying(255),
+    document_type character varying(255),
+    email character varying(255),
+    fecha_corte date,
+    identification character varying(255),
+    last_name character varying(255),
+    name character varying(255),
+    product character varying(255),
+    saldo_actual numeric(19,2),
+    status character varying(255),
+    id_alexa_user_id_device character varying(255)
+);
+
+
+ALTER TABLE public.flow_alexa OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 17299)
+-- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.hibernate_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.hibernate_sequence OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 17291)
+-- Name: promocion_diners; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.promocion_diners (
+    contacto_establecimiento character varying(255),
+    direccion_establecimiento character varying(255),
+    establecimiento character varying(255),
+    fecha_desde date,
+    fecha_hasta date,
+    promocion character varying(255),
+    tipo_promocion character varying(255),
+    id integer NOT NULL,
+    ciudad character varying(255)
+);
+
+
+ALTER TABLE public.promocion_diners OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 17301)
+-- Name: promocion_diners_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.promocion_diners_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.promocion_diners_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3011 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: promocion_diners_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.promocion_diners_id_seq OWNED BY public.promocion_diners.id;
+
+
+--
+-- TOC entry 2843 (class 2604 OID 17303)
+-- Name: promocion_diners id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.promocion_diners ALTER COLUMN id SET DEFAULT nextval('public.promocion_diners_id_seq'::regclass);
+
+
+--
+-- TOC entry 2992 (class 0 OID 17218)
+-- Dependencies: 199
+-- Data for Name: batch_job_execution; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.batch_job_execution (job_execution_id, version, job_instance_id, create_time, start_time, end_time, status, exit_code, exit_message, last_updated, job_configuration_location) FROM stdin;
+1	2	1	2020-03-20 16:06:03.79	2020-03-20 16:06:03.924	2020-03-20 16:06:04.283	FAILED	FAILED		2020-03-20 16:06:04.285	\N
+24	2	24	2020-03-27 12:00:03.762	2020-03-27 12:00:03.836	2020-03-27 12:00:04.164	COMPLETED	COMPLETED		2020-03-27 12:00:04.166	\N
+2	2	2	2020-03-20 16:10:03.214	2020-03-20 16:10:03.226	2020-03-20 16:10:03.295	FAILED	FAILED		2020-03-20 16:10:03.296	\N
+3	2	3	2020-03-20 16:13:03.231	2020-03-20 16:13:03.242	2020-03-20 16:13:03.306	FAILED	FAILED		2020-03-20 16:13:03.306	\N
+4	2	4	2020-03-20 16:15:05.118	2020-03-20 16:15:05.452	2020-03-20 16:15:35.457	FAILED	FAILED		2020-03-20 16:15:35.458	\N
+25	2	25	2020-03-27 12:12:04.91	2020-03-27 12:12:05.107	2020-03-27 12:12:05.861	COMPLETED	COMPLETED		2020-03-27 12:12:05.862	\N
+5	2	5	2020-03-20 16:18:03.796	2020-03-20 16:18:03.807	2020-03-20 16:18:04.236	FAILED	FAILED		2020-03-20 16:18:04.237	\N
+6	2	6	2020-03-20 16:25:03.597	2020-03-20 16:25:03.7	2020-03-20 16:25:04.237	FAILED	FAILED		2020-03-20 16:25:04.239	\N
+7	2	7	2020-03-20 16:28:04.271	2020-03-20 16:28:04.425	2020-03-20 16:28:04.83	COMPLETED	COMPLETED		2020-03-20 16:28:04.832	\N
+26	2	26	2020-03-30 14:03:04.599	2020-03-30 14:03:04.709	2020-03-30 14:03:05.161	COMPLETED	COMPLETED		2020-03-30 14:03:05.162	\N
+8	2	8	2020-03-25 16:10:03.697	2020-03-25 16:10:03.749	2020-03-25 16:10:03.992	COMPLETED	COMPLETED		2020-03-25 16:10:03.993	\N
+9	2	9	2020-03-25 16:30:04.191	2020-03-25 16:30:04.287	2020-03-25 16:30:56.284	COMPLETED	COMPLETED		2020-03-25 16:30:56.285	\N
+10	2	10	2020-03-25 17:05:05.012	2020-03-25 17:05:05.113	2020-03-25 17:05:05.832	COMPLETED	COMPLETED		2020-03-25 17:05:05.834	\N
+27	2	27	2020-03-30 15:59:03.954	2020-03-30 15:59:04.008	2020-03-30 15:59:04.272	COMPLETED	COMPLETED		2020-03-30 15:59:04.274	\N
+11	2	11	2020-03-25 17:10:05.163	2020-03-25 17:10:05.249	2020-03-25 17:12:07.403	COMPLETED	COMPLETED		2020-03-25 17:12:07.406	\N
+12	2	12	2020-03-25 17:20:06.47	2020-03-25 17:20:06.548	2020-03-25 17:20:06.899	COMPLETED	COMPLETED		2020-03-25 17:20:06.901	\N
+13	2	13	2020-03-25 17:25:03.622	2020-03-25 17:25:03.674	2020-03-25 17:25:03.931	COMPLETED	COMPLETED		2020-03-25 17:25:03.933	\N
+14	2	14	2020-03-25 18:50:03.825	2020-03-25 18:50:03.88	2020-03-25 18:50:04.122	COMPLETED	COMPLETED		2020-03-25 18:50:04.123	\N
+15	2	15	2020-03-26 14:36:04.387	2020-03-26 14:36:04.483	2020-03-26 14:36:04.806	FAILED	FAILED		2020-03-26 14:36:04.807	\N
+16	2	16	2020-03-26 14:38:03.225	2020-03-26 14:38:03.238	2020-03-26 14:38:03.338	FAILED	FAILED		2020-03-26 14:38:03.338	\N
+17	2	17	2020-03-26 14:44:04.31	2020-03-26 14:44:04.376	2020-03-26 14:44:04.645	COMPLETED	COMPLETED		2020-03-26 14:44:04.647	\N
+18	2	18	2020-03-26 15:19:06.094	2020-03-26 15:19:06.174	2020-03-26 15:19:06.628	COMPLETED	COMPLETED		2020-03-26 15:19:06.63	\N
+19	2	19	2020-03-26 15:24:05.516	2020-03-26 15:24:05.709	2020-03-26 15:24:42.511	COMPLETED	COMPLETED		2020-03-26 15:24:42.512	\N
+20	2	20	2020-03-26 16:02:04.465	2020-03-26 16:02:04.571	2020-03-26 16:02:04.98	COMPLETED	COMPLETED		2020-03-26 16:02:04.981	\N
+21	2	21	2020-03-26 16:10:11.591	2020-03-26 16:10:11.81	2020-03-26 16:10:12.653	COMPLETED	COMPLETED		2020-03-26 16:10:12.655	\N
+22	2	22	2020-03-26 16:32:04.298	2020-03-26 16:32:04.396	2020-03-26 16:32:04.636	COMPLETED	COMPLETED		2020-03-26 16:32:04.637	\N
+23	2	23	2020-03-27 10:06:03.624	2020-03-27 10:06:03.68	2020-03-27 10:06:03.93	COMPLETED	COMPLETED		2020-03-27 10:06:03.931	\N
+\.
+
+
+--
+-- TOC entry 2996 (class 0 OID 17265)
+-- Dependencies: 203
+-- Data for Name: batch_job_execution_context; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.batch_job_execution_context (job_execution_id, short_context, serialized_context) FROM stdin;
+1	{}	\N
+2	{}	\N
+3	{}	\N
+4	{}	\N
+5	{}	\N
+6	{}	\N
+7	{}	\N
+8	{}	\N
+9	{}	\N
+10	{}	\N
+11	{}	\N
+12	{}	\N
+13	{}	\N
+14	{}	\N
+15	{}	\N
+16	{}	\N
+17	{}	\N
+18	{}	\N
+19	{}	\N
+20	{}	\N
+21	{}	\N
+22	{}	\N
+23	{}	\N
+24	{}	\N
+25	{}	\N
+26	{}	\N
+27	{}	\N
+\.
+
+
+--
+-- TOC entry 2993 (class 0 OID 17231)
+-- Dependencies: 200
+-- Data for Name: batch_job_execution_params; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.batch_job_execution_params (job_execution_id, type_cd, key_name, string_val, date_val, long_val, double_val, identifying) FROM stdin;
+1	LONG	time		1969-12-31 19:00:00	1584738363732	0	Y
+1	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@4476dd08}	1969-12-31 19:00:00	0	0	Y
+2	LONG	time		1969-12-31 19:00:00	1584738603206	0	Y
+2	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@5591b0d2}	1969-12-31 19:00:00	0	0	Y
+3	LONG	time		1969-12-31 19:00:00	1584738783225	0	Y
+3	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@279d2185}	1969-12-31 19:00:00	0	0	Y
+4	LONG	time		1969-12-31 19:00:00	1584738905048	0	Y
+4	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@3c11e346}	1969-12-31 19:00:00	0	0	Y
+5	LONG	time		1969-12-31 19:00:00	1584739083782	0	Y
+5	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@64954222}	1969-12-31 19:00:00	0	0	Y
+6	LONG	time		1969-12-31 19:00:00	1584739503559	0	Y
+6	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@18cbb5b2}	1969-12-31 19:00:00	0	0	Y
+7	LONG	time		1969-12-31 19:00:00	1584739684223	0	Y
+7	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@3d0bb775}	1969-12-31 19:00:00	0	0	Y
+8	LONG	time		1969-12-31 19:00:00	1585170603668	0	Y
+8	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@6d41c780}	1969-12-31 19:00:00	0	0	Y
+9	LONG	time		1969-12-31 19:00:00	1585171804149	0	Y
+9	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@232dd53c}	1969-12-31 19:00:00	0	0	Y
+10	LONG	time		1969-12-31 19:00:00	1585173904947	0	Y
+10	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@40f57a7c}	1969-12-31 19:00:00	0	0	Y
+11	LONG	time		1969-12-31 19:00:00	1585174205107	0	Y
+11	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@3d580d4c}	1969-12-31 19:00:00	0	0	Y
+12	LONG	time		1969-12-31 19:00:00	1585174806433	0	Y
+12	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@1f80a9cc}	1969-12-31 19:00:00	0	0	Y
+13	LONG	time		1969-12-31 19:00:00	1585175103590	0	Y
+13	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@712248fc}	1969-12-31 19:00:00	0	0	Y
+14	LONG	time		1969-12-31 19:00:00	1585180203795	0	Y
+14	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@56f00abf}	1969-12-31 19:00:00	0	0	Y
+15	LONG	time		1969-12-31 19:00:00	1585251364329	0	Y
+15	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@3c5a26c4}	1969-12-31 19:00:00	0	0	Y
+16	LONG	time		1969-12-31 19:00:00	1585251483216	0	Y
+16	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@4a86f904}	1969-12-31 19:00:00	0	0	Y
+17	LONG	time		1969-12-31 19:00:00	1585251844276	0	Y
+17	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@2387d2fa}	1969-12-31 19:00:00	0	0	Y
+18	LONG	time		1969-12-31 19:00:00	1585253946050	0	Y
+18	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@557f9f6e}	1969-12-31 19:00:00	0	0	Y
+19	LONG	time		1969-12-31 19:00:00	1585254245407	0	Y
+19	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@33d29f9d}	1969-12-31 19:00:00	0	0	Y
+20	LONG	time		1969-12-31 19:00:00	1585256524416	0	Y
+20	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@392382e7}	1969-12-31 19:00:00	0	0	Y
+21	LONG	time		1969-12-31 19:00:00	1585257011507	0	Y
+21	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@77e7a0cd}	1969-12-31 19:00:00	0	0	Y
+22	LONG	time		1969-12-31 19:00:00	1585258324263	0	Y
+22	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@3b90030d}	1969-12-31 19:00:00	0	0	Y
+23	LONG	time		1969-12-31 19:00:00	1585321563593	0	Y
+23	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@4584460b}	1969-12-31 19:00:00	0	0	Y
+24	LONG	time		1969-12-31 19:00:00	1585328403719	0	Y
+24	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@22212bd1}	1969-12-31 19:00:00	0	0	Y
+25	LONG	time		1969-12-31 19:00:00	1585329124793	0	Y
+25	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@a630926}	1969-12-31 19:00:00	0	0	Y
+26	LONG	time		1969-12-31 19:00:00	1585594984535	0	Y
+26	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@459d6c93}	1969-12-31 19:00:00	0	0	Y
+27	LONG	time		1969-12-31 19:00:00	1585601943920	0	Y
+27	STRING	fileData	{fileData=ec.com.dinersclub.chatbot.flowalexa.web.rest.vm.FileData@3b7521d9}	1969-12-31 19:00:00	0	0	Y
+\.
+
+
+--
+-- TOC entry 2991 (class 0 OID 17211)
+-- Dependencies: 198
+-- Data for Name: batch_job_instance; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.batch_job_instance (job_instance_id, version, job_name, job_key) FROM stdin;
+1	0	importUserJob	63da4cf4a5708c2c05637178632d7ff4
+2	0	importUserJob	3b387fdedb7868c85fe035da03521473
+3	0	importUserJob	b826c290dd40032c6fd34aed81204ce5
+4	0	importUserJob	4c7c1d26a9a105e72f13a29c70876980
+5	0	importUserJob	eeb504484a3690fb7a11f6fa2af3d60a
+6	0	importUserJob	f6ea41d323827438a429e3ace0d40076
+7	0	importUserJob	3acd3b8951cff890b83ac562d07e4c74
+8	0	importUserJob	62c8848ee503c77f9d11c6e20f2f45fc
+9	0	importUserJob	9c4fe202ff2449c6b8cd2d03e2aca959
+10	0	importUserJob	35cc26f27a4d51ba419f9d5f939998ed
+11	0	importUserJob	e0b392f61308f51224d1e41598d819b3
+12	0	importUserJob	f1cd68491585eac8079cc10c5c009b60
+13	0	importUserJob	60e329b0fc1eb882d354595a78d88063
+14	0	importUserJob	6aea824c41fe0a1a827693e8945d41c4
+15	0	importUserJob	b9270284cc76f52548b7e168226d0ade
+16	0	importUserJob	ee18a12cefd5121cb416850357fcb54f
+17	0	importUserJob	207c92bd6e702c1e289d6d197bed9ed8
+18	0	importUserJob	7580b0f9f7ec106c864c7309d4635bc4
+19	0	importUserJob	eec66aa92a93eca708350b6b5a5e06bb
+20	0	importUserJob	b5f32ef2d9391cc39a62e6832e9bb51b
+21	0	importUserJob	37d2959ba143645e0f7d9747f9c2a080
+22	0	importUserJob	2b7e794b20f729a11962415dac9390a3
+23	0	importUserJob	79c93ebb8193a7cf3550ee97e9da0158
+24	0	importUserJob	dfea6f01f75de8306bd0c70e68c619f7
+25	0	importUserJob	725b5ea251a4616aca0334b720b2b6ab
+26	0	importUserJob	1a3a11b5b1b24be788f6b543c1ae6a3d
+27	0	importUserJob	3a5bc35743e786897f963d2f8d7b90ca
+\.
+
+
+--
+-- TOC entry 2994 (class 0 OID 17239)
+-- Dependencies: 201
+-- Data for Name: batch_step_execution; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.batch_step_execution (step_execution_id, version, step_name, job_execution_id, start_time, end_time, status, commit_count, read_count, filter_count, write_count, read_skip_count, write_skip_count, process_skip_count, rollback_count, exit_code, exit_message, last_updated) FROM stdin;
+1	3	step1	1	2020-03-20 16:06:03.99	2020-03-20 16:06:04.269	FAILED	1	0	0	0	0	0	0	1	FAILED	org.springframework.batch.item.file.FlatFileParseException: Parsing error at line: 2 in resource=[Byte array resource [resource loaded from byte array]], input=[Modo tasty;Los troncos;Eloy Alfaro y 6 de diciembre;0967781384;2020-03-01;2020-03-31;MODO_TASTY]\n\tat org.springframework.batch.item.file.FlatFileItemReader.doRead(FlatFileItemReader.java:189)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader.read(AbstractItemCountingItemStreamItemReader.java:93)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader$$FastClassBySpringCGLIB$$ebb633d0.invoke(<generated>)\n\tat org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:769)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.doProceed(DelegatingIntroductionInterceptor.java:136)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.invoke(DelegatingIntroductionInterceptor.java:124)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)\n\tat org.springframework.batch.item.file.FlatFileItemReader$$EnhancerBySpringCGLIB$$77b6.read(<generated>)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.doRead(SimpleChunkProvider.java:99)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.read(SimpleChunkProvider.java:180)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider$1.doInIteration(SimpleChunkProvider.java:126)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:145)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.provide(SimpleChunkProvider.java:118)\n\tat org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(Ch	2020-03-20 16:06:04.271
+7	4	step1	7	2020-03-20 16:28:04.499	2020-03-20 16:28:04.808	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-20 16:28:04.809
+6	3	step1	6	2020-03-20 16:25:03.75	2020-03-20 16:25:04.225	FAILED	1	1	0	0	0	0	0	1	FAILED	org.springframework.dao.DataIntegrityViolationException: PreparedStatementCallback; SQL [INSERT INTO promocion_diners(promocion, establecimiento, direccion_establecimiento, contacto_establecimiento, fecha_desde, fecha_hasta, tipo_promocion) VALUES (?, ?, ?, ?, ?, ?, ?)]; ERROR: null value in column "id" violates not-null constraint\n  Detail: Failing row contains (null, 0967781384, Eloy Alfaro y 6 de diciembre, Los troncos, 2020-03-01, 2020-03-31, Modo tasty, MODO_TASTY).; nested exception is org.postgresql.util.PSQLException: ERROR: null value in column "id" violates not-null constraint\n  Detail: Failing row contains (null, 0967781384, Eloy Alfaro y 6 de diciembre, Los troncos, 2020-03-01, 2020-03-31, Modo tasty, MODO_TASTY).\n\tat org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator.doTranslate(SQLErrorCodeSQLExceptionTranslator.java:247)\n\tat org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:72)\n\tat org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1443)\n\tat org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:633)\n\tat org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)\n\tat org.springframework.jdbc.core.JdbcTemplate.batchUpdate(JdbcTemplate.java:936)\n\tat org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate.batchUpdate(NamedParameterJdbcTemplate.java:366)\n\tat org.springframework.batch.item.database.JdbcBatchItemWriter.write(JdbcBatchItemWriter.java:182)\n\tat org.springframework.batch.core.step.item.SimpleChunkProcessor.writeItems(SimpleChunkProcessor.java:193)\n\tat org.springframework.batch.core.step.item.SimpleChunkProcessor.doWrite(SimpleChunkProcessor.java:159)\n\tat org.springframework.batch.core.step.item.SimpleChunkProcessor.write(SimpleChunkProcessor.java:294)\n\tat org.springframework.batch.core.step.item.SimpleChunkProcessor.process(SimpleChunkProcessor.java:217)\n\tat org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(ChunkOrientedTasklet.java:77)\n\tat org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:407)\n\tat org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:331)\n\tat org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:140)\n\tat org.springframework.batch.core.step.tasklet.TaskletStep$2.doInChunkContext(	2020-03-20 16:25:04.226
+2	3	step1	2	2020-03-20 16:10:03.251	2020-03-20 16:10:03.287	FAILED	1	0	0	0	0	0	0	1	FAILED	org.springframework.batch.item.file.FlatFileParseException: Parsing error at line: 2 in resource=[Byte array resource [resource loaded from byte array]], input=[Modo tasty;Los troncos;Eloy Alfaro y 6 de diciembre;0967781384;2020-03-01;2020-03-31;MODO_TASTY]\n\tat org.springframework.batch.item.file.FlatFileItemReader.doRead(FlatFileItemReader.java:189)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader.read(AbstractItemCountingItemStreamItemReader.java:93)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader$$FastClassBySpringCGLIB$$ebb633d0.invoke(<generated>)\n\tat org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:769)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.doProceed(DelegatingIntroductionInterceptor.java:136)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.invoke(DelegatingIntroductionInterceptor.java:124)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)\n\tat org.springframework.batch.item.file.FlatFileItemReader$$EnhancerBySpringCGLIB$$77b6.read(<generated>)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.doRead(SimpleChunkProvider.java:99)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.read(SimpleChunkProvider.java:180)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider$1.doInIteration(SimpleChunkProvider.java:126)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:145)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.provide(SimpleChunkProvider.java:118)\n\tat org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(Ch	2020-03-20 16:10:03.287
+3	3	step1	3	2020-03-20 16:13:03.267	2020-03-20 16:13:03.298	FAILED	1	0	0	0	0	0	0	1	FAILED	org.springframework.batch.item.file.FlatFileParseException: Parsing error at line: 2 in resource=[Byte array resource [resource loaded from byte array]], input=[Modo tasty;Los troncos;Eloy Alfaro y 6 de diciembre;0967781384;01-03-2020;31-03-2020;MODO_TASTY]\n\tat org.springframework.batch.item.file.FlatFileItemReader.doRead(FlatFileItemReader.java:189)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader.read(AbstractItemCountingItemStreamItemReader.java:93)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader$$FastClassBySpringCGLIB$$ebb633d0.invoke(<generated>)\n\tat org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:769)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.doProceed(DelegatingIntroductionInterceptor.java:136)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.invoke(DelegatingIntroductionInterceptor.java:124)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)\n\tat org.springframework.batch.item.file.FlatFileItemReader$$EnhancerBySpringCGLIB$$77b6.read(<generated>)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.doRead(SimpleChunkProvider.java:99)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.read(SimpleChunkProvider.java:180)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider$1.doInIteration(SimpleChunkProvider.java:126)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:145)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.provide(SimpleChunkProvider.java:118)\n\tat org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(Ch	2020-03-20 16:13:03.298
+8	4	step1	8	2020-03-25 16:10:03.797	2020-03-25 16:10:03.981	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-25 16:10:03.981
+4	3	step1	4	2020-03-20 16:15:05.52	2020-03-20 16:15:35.445	FAILED	1	0	0	0	0	0	0	1	FAILED	org.springframework.batch.item.file.FlatFileParseException: Parsing error at line: 2 in resource=[Byte array resource [resource loaded from byte array]], input=[Modo tasty;Los troncos;Eloy Alfaro y 6 de diciembre;0967781384;01-03-2020;31-03-2020;MODO_TASTY]\n\tat org.springframework.batch.item.file.FlatFileItemReader.doRead(FlatFileItemReader.java:189)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader.read(AbstractItemCountingItemStreamItemReader.java:93)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader$$FastClassBySpringCGLIB$$ebb633d0.invoke(<generated>)\n\tat org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:769)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.doProceed(DelegatingIntroductionInterceptor.java:136)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.invoke(DelegatingIntroductionInterceptor.java:124)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)\n\tat org.springframework.batch.item.file.FlatFileItemReader$$EnhancerBySpringCGLIB$$4963cfe9.read(<generated>)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.doRead(SimpleChunkProvider.java:99)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.read(SimpleChunkProvider.java:180)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider$1.doInIteration(SimpleChunkProvider.java:126)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:145)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.provide(SimpleChunkProvider.java:118)\n\tat org.springframework.batch.core.step.item.ChunkOrientedTasklet.execut	2020-03-20 16:15:35.446
+5	3	step1	5	2020-03-20 16:18:03.827	2020-03-20 16:18:04.224	FAILED	1	1	0	0	0	0	0	1	FAILED	org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [INSERT INTO promocion_diners(promocion, establecimiento, direccion_establecimiento, contacto_establecimiento, fecha_desde, fecha_hasta, tipo_promocion) VALUES (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.postgresql.util.PSQLException: Can't infer the SQL type to use for an instance of ec.com.dinersclub.chatbot.flowalexa.enums.TipoPromocionEnum. Use setObject() with an explicit Types value to specify the type to use.\n\tat org.springframework.jdbc.support.SQLStateSQLExceptionTranslator.doTranslate(SQLStateSQLExceptionTranslator.java:101)\n\tat org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:72)\n\tat org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:81)\n\tat org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:81)\n\tat org.springframework.jdbc.core.JdbcTemplate.translateException(JdbcTemplate.java:1443)\n\tat org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:633)\n\tat org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:647)\n\tat org.springframework.jdbc.core.JdbcTemplate.batchUpdate(JdbcTemplate.java:936)\n\tat org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate.batchUpdate(NamedParameterJdbcTemplate.java:366)\n\tat org.springframework.batch.item.database.JdbcBatchItemWriter.write(JdbcBatchItemWriter.java:182)\n\tat org.springframework.batch.core.step.item.SimpleChunkProcessor.writeItems(SimpleChunkProcessor.java:193)\n\tat org.springframework.batch.core.step.item.SimpleChunkProcessor.doWrite(SimpleChunkProcessor.java:159)\n\tat org.springframework.batch.core.step.item.SimpleChunkProcessor.write(SimpleChunkProcessor.java:294)\n\tat org.springframework.batch.core.step.item.SimpleChunkProcessor.process(SimpleChunkProcessor.java:217)\n\tat org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(ChunkOrientedTasklet.java:77)\n\tat org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:407)\n\tat org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:331)\n\tat org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:140)\n\tat org.springframework.batch.core.step	2020-03-20 16:18:04.225
+9	4	step1	9	2020-03-25 16:30:04.355	2020-03-25 16:30:56.271	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-25 16:30:56.272
+10	4	step1	10	2020-03-25 17:05:05.194	2020-03-25 17:05:05.817	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-25 17:05:05.818
+11	4	step1	11	2020-03-25 17:10:05.317	2020-03-25 17:12:07.39	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-25 17:12:07.392
+12	4	step1	12	2020-03-25 17:20:06.609	2020-03-25 17:20:06.884	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-25 17:20:06.885
+13	4	step1	13	2020-03-25 17:25:03.721	2020-03-25 17:25:03.92	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-25 17:25:03.921
+14	4	step1	14	2020-03-25 18:50:03.929	2020-03-25 18:50:04.11	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-25 18:50:04.111
+15	3	step1	15	2020-03-26 14:36:04.559	2020-03-26 14:36:04.786	FAILED	1	0	0	0	0	0	0	1	FAILED	org.springframework.batch.item.file.FlatFileParseException: Parsing error at line: 2 in resource=[Byte array resource [resource loaded from byte array]], input=[Modo tasty;Los troncos;Eloy Alfaro y 6 de diciembre;0967781384;20200301;20200331;MODO_TASTY]\n\tat org.springframework.batch.item.file.FlatFileItemReader.doRead(FlatFileItemReader.java:189)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader.read(AbstractItemCountingItemStreamItemReader.java:93)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader$$FastClassBySpringCGLIB$$ebb633d0.invoke(<generated>)\n\tat org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:769)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.doProceed(DelegatingIntroductionInterceptor.java:136)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.invoke(DelegatingIntroductionInterceptor.java:124)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)\n\tat org.springframework.batch.item.file.FlatFileItemReader$$EnhancerBySpringCGLIB$$40043c9e.read(<generated>)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.doRead(SimpleChunkProvider.java:99)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.read(SimpleChunkProvider.java:180)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider$1.doInIteration(SimpleChunkProvider.java:126)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:145)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.provide(SimpleChunkProvider.java:118)\n\tat org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(Ch	2020-03-26 14:36:04.788
+16	3	step1	16	2020-03-26 14:38:03.259	2020-03-26 14:38:03.33	FAILED	1	0	0	0	0	0	0	1	FAILED	org.springframework.batch.item.file.FlatFileParseException: Parsing error at line: 2 in resource=[Byte array resource [resource loaded from byte array]], input=[Modo tasty;Los troncos;Eloy Alfaro y 6 de diciembre;0967781384;20200301;20200331;MODO_TASTY;Quito]\n\tat org.springframework.batch.item.file.FlatFileItemReader.doRead(FlatFileItemReader.java:189)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader.read(AbstractItemCountingItemStreamItemReader.java:93)\n\tat org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader$$FastClassBySpringCGLIB$$ebb633d0.invoke(<generated>)\n\tat org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:769)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.doProceed(DelegatingIntroductionInterceptor.java:136)\n\tat org.springframework.aop.support.DelegatingIntroductionInterceptor.invoke(DelegatingIntroductionInterceptor.java:124)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)\n\tat org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)\n\tat org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)\n\tat org.springframework.batch.item.file.FlatFileItemReader$$EnhancerBySpringCGLIB$$40043c9e.read(<generated>)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.doRead(SimpleChunkProvider.java:99)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.read(SimpleChunkProvider.java:180)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider$1.doInIteration(SimpleChunkProvider.java:126)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:375)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\n\tat org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:145)\n\tat org.springframework.batch.core.step.item.SimpleChunkProvider.provide(SimpleChunkProvider.java:118)\n\tat org.springframework.batch.core.step.item.ChunkOrientedTasklet.exec	2020-03-26 14:38:03.33
+22	4	step1	22	2020-03-26 16:32:04.437	2020-03-26 16:32:04.624	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-26 16:32:04.625
+17	4	step1	17	2020-03-26 14:44:04.418	2020-03-26 14:44:04.633	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-26 14:44:04.634
+27	4	step1	27	2020-03-30 15:59:04.055	2020-03-30 15:59:04.26	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-30 15:59:04.261
+18	4	step1	18	2020-03-26 15:19:06.231	2020-03-26 15:19:06.613	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-26 15:19:06.614
+23	4	step1	23	2020-03-27 10:06:03.733	2020-03-27 10:06:03.916	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-27 10:06:03.917
+19	4	step1	19	2020-03-26 15:24:05.834	2020-03-26 15:24:42.499	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-26 15:24:42.5
+24	4	step1	24	2020-03-27 12:00:03.895	2020-03-27 12:00:04.138	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-27 12:00:04.14
+20	4	step1	20	2020-03-26 16:02:04.633	2020-03-26 16:02:04.968	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-26 16:02:04.969
+21	4	step1	21	2020-03-26 16:10:11.927	2020-03-26 16:10:12.621	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-26 16:10:12.624
+25	4	step1	25	2020-03-27 12:12:05.223	2020-03-27 12:12:05.835	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-27 12:12:05.837
+26	4	step1	26	2020-03-30 14:03:04.78	2020-03-30 14:03:05.148	COMPLETED	2	1	0	1	0	0	0	0	COMPLETED		2020-03-30 14:03:05.149
+\.
+
+
+--
+-- TOC entry 2995 (class 0 OID 17252)
+-- Dependencies: 202
+-- Data for Name: batch_step_execution_context; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.batch_step_execution_context (step_execution_id, short_context, serialized_context) FROM stdin;
+19	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+15	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":2,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+1	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":2,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+10	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+2	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":2,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+3	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":2,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+22	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+16	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":2,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+4	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":2,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+11	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+5	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":2,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+6	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":2,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+26	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+12	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+7	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+20	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+17	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+8	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+13	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+9	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+14	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+23	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+18	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+21	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+25	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+24	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+27	{"batch.taskletType":"org.springframework.batch.core.step.item.ChunkOrientedTasklet","personItemReader.read.count":3,"batch.stepType":"org.springframework.batch.core.step.tasklet.TaskletStep"}	\N
+\.
+
+
+--
+-- TOC entry 2989 (class 0 OID 17190)
+-- Dependencies: 196
+-- Data for Name: device_mapping; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.device_mapping (user_id_device, identification, state, fecha_bloqueo, remaining_attempts, tipo) FROM stdin;
+1234567890	1721930442	VALIDADO	\N	0	ALEXA
+\.
+
+
+--
+-- TOC entry 2990 (class 0 OID 17198)
+-- Dependencies: 197
+-- Data for Name: flow_alexa; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.flow_alexa (id, campaign, card_number, cellphone, document_type, email, fecha_corte, identification, last_name, name, product, saldo_actual, status, id_alexa_user_id_device) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3000 (class 0 OID 17291)
+-- Dependencies: 207
+-- Data for Name: promocion_diners; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.promocion_diners (contacto_establecimiento, direccion_establecimiento, establecimiento, fecha_desde, fecha_hasta, promocion, tipo_promocion, id, ciudad) FROM stdin;
+0967781384	Eloy Alfaro y 6 de diciembre	Los troncos, Segundo muelle, Friday's	2020-03-01	2020-03-31	Modo tasty	MODO_TASTY	19	Quito
+\.
+
+
+--
+-- TOC entry 3012 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: batch_job_execution_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.batch_job_execution_seq', 27, true);
+
+
+--
+-- TOC entry 3013 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: batch_job_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.batch_job_seq', 27, true);
+
+
+--
+-- TOC entry 3014 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: batch_step_execution_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.batch_step_execution_seq', 27, true);
+
+
+--
+-- TOC entry 3015 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
+
+
+--
+-- TOC entry 3016 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: promocion_diners_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.promocion_diners_id_seq', 19, true);
+
+
+--
+-- TOC entry 2859 (class 2606 OID 17272)
+-- Name: batch_job_execution_context batch_job_execution_context_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_job_execution_context
+    ADD CONSTRAINT batch_job_execution_context_pkey PRIMARY KEY (job_execution_id);
+
+
+--
+-- TOC entry 2853 (class 2606 OID 17225)
+-- Name: batch_job_execution batch_job_execution_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_job_execution
+    ADD CONSTRAINT batch_job_execution_pkey PRIMARY KEY (job_execution_id);
+
+
+--
+-- TOC entry 2849 (class 2606 OID 17215)
+-- Name: batch_job_instance batch_job_instance_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_job_instance
+    ADD CONSTRAINT batch_job_instance_pkey PRIMARY KEY (job_instance_id);
+
+
+--
+-- TOC entry 2857 (class 2606 OID 17259)
+-- Name: batch_step_execution_context batch_step_execution_context_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_step_execution_context
+    ADD CONSTRAINT batch_step_execution_context_pkey PRIMARY KEY (step_execution_id);
+
+
+--
+-- TOC entry 2855 (class 2606 OID 17246)
+-- Name: batch_step_execution batch_step_execution_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_step_execution
+    ADD CONSTRAINT batch_step_execution_pkey PRIMARY KEY (step_execution_id);
+
+
+--
+-- TOC entry 2845 (class 2606 OID 17197)
+-- Name: device_mapping device_mapping_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.device_mapping
+    ADD CONSTRAINT device_mapping_pkey PRIMARY KEY (user_id_device);
+
+
+--
+-- TOC entry 2847 (class 2606 OID 17205)
+-- Name: flow_alexa flow_alexa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.flow_alexa
+    ADD CONSTRAINT flow_alexa_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2851 (class 2606 OID 17217)
+-- Name: batch_job_instance job_inst_un; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_job_instance
+    ADD CONSTRAINT job_inst_un UNIQUE (job_name, job_key);
+
+
+--
+-- TOC entry 2861 (class 2606 OID 17311)
+-- Name: promocion_diners promocion_diners_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.promocion_diners
+    ADD CONSTRAINT promocion_diners_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2862 (class 2606 OID 17206)
+-- Name: flow_alexa fkm92951uyebeues5l5cp776xwj; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.flow_alexa
+    ADD CONSTRAINT fkm92951uyebeues5l5cp776xwj FOREIGN KEY (id_alexa_user_id_device) REFERENCES public.device_mapping(user_id_device);
+
+
+--
+-- TOC entry 2867 (class 2606 OID 17273)
+-- Name: batch_job_execution_context job_exec_ctx_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_job_execution_context
+    ADD CONSTRAINT job_exec_ctx_fk FOREIGN KEY (job_execution_id) REFERENCES public.batch_job_execution(job_execution_id);
+
+
+--
+-- TOC entry 2864 (class 2606 OID 17234)
+-- Name: batch_job_execution_params job_exec_params_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_job_execution_params
+    ADD CONSTRAINT job_exec_params_fk FOREIGN KEY (job_execution_id) REFERENCES public.batch_job_execution(job_execution_id);
+
+
+--
+-- TOC entry 2865 (class 2606 OID 17247)
+-- Name: batch_step_execution job_exec_step_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_step_execution
+    ADD CONSTRAINT job_exec_step_fk FOREIGN KEY (job_execution_id) REFERENCES public.batch_job_execution(job_execution_id);
+
+
+--
+-- TOC entry 2863 (class 2606 OID 17226)
+-- Name: batch_job_execution job_inst_exec_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_job_execution
+    ADD CONSTRAINT job_inst_exec_fk FOREIGN KEY (job_instance_id) REFERENCES public.batch_job_instance(job_instance_id);
+
+
+--
+-- TOC entry 2866 (class 2606 OID 17260)
+-- Name: batch_step_execution_context step_exec_ctx_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.batch_step_execution_context
+    ADD CONSTRAINT step_exec_ctx_fk FOREIGN KEY (step_execution_id) REFERENCES public.batch_step_execution(step_execution_id);
+
+
+-- Completed on 2020-04-07 12:45:45 -05
+
+--
+-- PostgreSQL database dump complete
+--
+
